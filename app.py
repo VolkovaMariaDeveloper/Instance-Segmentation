@@ -24,7 +24,6 @@ class App(QMainWindow):
         self.setStyleSheet("background-color: #D6D6D6;")
         self.table_widget = MyTableWidget(self)
         self.setCentralWidget(self.table_widget)
-        
         self.show()
 
 class MyTableWidget(QWidget):
