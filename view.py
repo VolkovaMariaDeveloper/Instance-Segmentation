@@ -35,36 +35,36 @@ class MainView (IView):
         #self.uploadVideoButton.setGeometry(200, 150, 300, 40)
         self.uploadVideoButton.setFixedSize(150, 30)
         self.uploadVideoButton.setFont(QtGui.QFont('Times', 15))
-        self.uploadVideoButton.setStyleSheet('background: white; border-radius: 10px')
+        self.uploadVideoButton.setStyleSheet('background: white')
 
         self.uploadLabelButton = QPushButton("")
         
         self.uploadLabelButton.clicked.connect(self.uploadLabelButtonCliked)
         self.uploadLabelButton.setIcon(QtGui.QIcon('uploadLabel.png'))
         self.uploadLabelButton.setFixedSize(40, 30)
-        self.uploadLabelButton.setStyleSheet('background: white; border-radius: 5px')
+        self.uploadLabelButton.setStyleSheet('background: white')
 
         self.startButton = QPushButton("Start")
         self.startButton.clicked.connect(self.startButtonClicked)
         self.startButton.setFixedSize(150, 30)
         self.startButton.setFont(QtGui.QFont('Times', 15))
-        self.startButton.setStyleSheet('background: white; border-radius: 10px')
+        self.startButton.setStyleSheet('background: white')
         
         self.textBoxLeftVideoName = QLabel("LeftVideo")
         self.textBoxLeftVideoName.setFont(QtGui.QFont('Times', 15))
         self.textBoxLeftVideoName.setAlignment(QtCore.Qt.AlignHCenter)
-        self.textBoxLeftVideoName.setStyleSheet('background: white; border-radius: 3px')
+        self.textBoxLeftVideoName.setStyleSheet('background: white')
         self.textBoxLeftVideoName.setFixedSize(700, 30)
         
 
         self.textBoxRightVideoName = QLabel("RightVideo")
         self.textBoxRightVideoName.setFont(QtGui.QFont('Times', 15))
         self.textBoxRightVideoName.setAlignment(QtCore.Qt.AlignHCenter)
-        self.textBoxRightVideoName.setStyleSheet('background: white; border-radius: 3px')
+        self.textBoxRightVideoName.setStyleSheet('background: white')
         self.textBoxRightVideoName.setFixedSize(700, 30)
 
         self.textBoxLabelName =  QLabel('No Label...')
-        self.textBoxLabelName.setStyleSheet('background: #bababa; border-radius: 3px')
+        self.textBoxLabelName.setStyleSheet('background: #bababa')
         self.textBoxLabelName.setFixedSize(200, 30)
         self.textBoxLabelName.setFont(QtGui.QFont('Times', 15))
         self.textBoxLabelName.setAlignment(QtCore.Qt.AlignCenter)
@@ -83,20 +83,20 @@ class MainView (IView):
         self.firstRadioButton.setFont(QtGui.QFont('Times', 15))
         self.firstRadioButton.setFixedSize(200, 30)
         self.firstRadioButton.setStyleSheet("QRadioButton" "{""spacing : 100px;""}")
-        self.firstRadioButton.setStyleSheet('background: #bababa; border-radius: 3px')
+        #self.firstRadioButton.setStyleSheet('background: #bababa')
         self.firstRadioButton.setChecked(True)
 
         self.secondRadioButton = QRadioButton('PolarMask')
         self.secondRadioButton.setFont(QtGui.QFont('Times', 15))
         self.secondRadioButton.setFixedSize(200, 30)
         self.secondRadioButton.setStyleSheet("QRadioButton" "{""spacing : 100px;""}")
-        self.secondRadioButton.setStyleSheet('background: #bababa; border-radius: 3px')
+        #self.secondRadioButton.setStyleSheet('background: #bababa')
 
         self.thirdRadioButton = QRadioButton('YOLACT')
         self.thirdRadioButton.setFont(QtGui.QFont('Times', 15))
         self.thirdRadioButton.setFixedSize(200, 30)
         self.thirdRadioButton.setStyleSheet("QRadioButton" "{""spacing : 100px;""}")
-        self.thirdRadioButton.setStyleSheet('background: #bababa; border-radius: 3px')
+        #self.thirdRadioButton.setStyleSheet('background: #bababa')
 
         self.widgetRadioButton = QWidget()
         self.layoutRadioButton = QHBoxLayout()
@@ -118,7 +118,7 @@ class MainView (IView):
         layout.addWidget(self.leftVideoWidget)
         layout.addWidget(self.textBoxLeftVideoName, QtCore.Qt.AlignBottom)
         layout.setContentsMargins(0, 0, 0, 0)#Где еще можно использвать?
-        self.leftMediaplayerWidget.setStyleSheet('background: #bababa; border-radius: 3px')
+        self.leftMediaplayerWidget.setStyleSheet('background: #bababa')
         self.leftMediaplayerWidget.setLayout(layout)
         self.leftMediaplayer.setVideoOutput(self.leftVideoWidget)
 
@@ -129,7 +129,7 @@ class MainView (IView):
         layout.addWidget(self.rightVideoWidget)
         layout.addWidget(self.textBoxRightVideoName, QtCore.Qt.AlignBottom)
         layout.setContentsMargins(0, 0, 0, 0)
-        self.rightMediaplayerWidget.setStyleSheet('background: #bababa; border-radius: 3px')
+        self.rightMediaplayerWidget.setStyleSheet('background: #bababa')
         self.rightMediaplayerWidget.setLayout(layout)
         self.rightMediaplayer.setVideoOutput(self.rightVideoWidget)
        
@@ -176,18 +176,18 @@ class ComparasionView(IView):
         self.startButton.clicked.connect(self.startButtonClicked)
         self.startButton.setFixedSize(150, 30)
         self.startButton.setFont(QtGui.QFont('Times', 15))
-        self.startButton.setStyleSheet('background: white; border-radius: 10px')
+        self.startButton.setStyleSheet('background: white')
 
         self.textBoxLeftVideoName = QLabel("Left video")
         self.textBoxLeftVideoName.setFont(QtGui.QFont('Times', 15))
         self.textBoxLeftVideoName.setAlignment(QtCore.Qt.AlignHCenter)
-        self.textBoxLeftVideoName.setStyleSheet('background: white; border-radius: 3px')
+        self.textBoxLeftVideoName.setStyleSheet('background: white')
         self.textBoxLeftVideoName.setFixedSize(700, 30)
 
         self.textBoxRightVideoName = QLabel("Right video")
         self.textBoxRightVideoName.setFont(QtGui.QFont('Times', 15))
         self.textBoxRightVideoName.setAlignment(QtCore.Qt.AlignHCenter)
-        self.textBoxRightVideoName.setStyleSheet('background: white; border-radius: 3px')
+        self.textBoxRightVideoName.setStyleSheet('background: white')
         self.textBoxRightVideoName.setFixedSize(700, 30)
 
         self.textBoxForLeftResults = QLabel("Left results")
@@ -206,7 +206,7 @@ class ComparasionView(IView):
         layout.addWidget(self.leftVideoWidget)
         layout.addWidget(self.textBoxLeftVideoName, QtCore.Qt.AlignBottom)
         layout.setContentsMargins(0, 0, 0, 0)#Где еще можно использвать?
-        self.leftMediaplayerWidget.setStyleSheet('background: #bababa; border-radius: 3px')
+        self.leftMediaplayerWidget.setStyleSheet('background: #bababa')
         self.leftMediaplayerWidget.setLayout(layout)
         self.leftMediaplayer.setVideoOutput(self.leftVideoWidget)
 
@@ -217,7 +217,7 @@ class ComparasionView(IView):
         layout.addWidget(self.rightVideoWidget)
         layout.addWidget(self.textBoxRightVideoName, QtCore.Qt.AlignBottom)
         layout.setContentsMargins(0, 0, 0, 0)
-        self.rightMediaplayerWidget.setStyleSheet('background: #bababa; border-radius: 3px')
+        self.rightMediaplayerWidget.setStyleSheet('background: #bababa')
         self.rightMediaplayerWidget.setLayout(layout)
         self.rightMediaplayer.setVideoOutput(self.rightVideoWidget)
 

@@ -36,8 +36,8 @@ class MyTableWidget(QWidget):
 
         self.tabs.addTab(self.mainTab,"Main")
         self.tabs.addTab(self.comparasionTab,"Comparasion")
-        self.tabs.resize(1500,850)
-        self.tabs.setDocumentMode(True)
+        self.tabs.setMinimumSize(1500,850)
+        self.tabs.setDocumentMode(False)
 
         self.mView = MainView()
 
