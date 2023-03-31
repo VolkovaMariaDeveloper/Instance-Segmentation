@@ -25,7 +25,6 @@ class MyTableWidget(QWidget):
     
     def __init__(self, parent):
         super(QWidget, self).__init__(parent)
-        #self.setStyleSheet('font-size: 18pt; font-family: Courier;')
 
         self.layout = QVBoxLayout(self)
         self.tabs = QTabWidget()
@@ -45,17 +44,16 @@ class MyTableWidget(QWidget):
         self.mainTab.setLayout(self.mainTab.layout)
       
 
-        self.mainTab.layout.addWidget(self.mView.uploadVideoButton,0,0,1,1, Qt.AlignmentFlag.AlignRight)
-        self.mainTab.layout.addWidget(self.mView.widgetLabel,0,1,1,1, Qt.AlignmentFlag.AlignRight)
-        self.mainTab.layout.addWidget(self.mView.widgetRadioButton,0,2,1,3)#,Qt.AlignmentFlag.AlignCenter)
+        self.mainTab.layout.addWidget(self.mView.widgetUploadVideo,0,0,1,3)
+        self.mainTab.layout.addWidget(self.mView.widgetLabel,1,0,1,3)
+        self.mainTab.layout.addWidget(self.mView.widgetRadioButton,0,3,2,3)
 
-        self.mainTab.layout.addWidget(self.mView.startButton,0,5,1,1,Qt.AlignmentFlag.AlignLeft)
-        self.mainTab.layout.addWidget(self.mView.leftMediaplayerWidget,2,0,3,3,Qt.AlignmentFlag.AlignHCenter)
-        self.mainTab.layout.addWidget(self.mView.rightMediaplayerWidget,2,3,3,3,Qt.AlignmentFlag.AlignHCenter)
+        self.mainTab.layout.addWidget(self.mView.leftMediaplayerWidget,2,0,3,3)
+        self.mainTab.layout.addWidget(self.mView.rightMediaplayerWidget,2,3,3,3)
 
         self.mainTab.layout.addWidget(self.mView.textBoxForResults,5,1,1,4,Qt.AlignmentFlag.AlignCenter)
         self.mainTab.layout.addWidget(self.mView.textBoxForRunningSystems,6,0,1,6, Qt.AlignmentFlag.AlignBottom)
-        self.mainTab.layout.addWidget(self.mView.empty,1,0,1,6, Qt.AlignmentFlag.AlignBottom)
+
        
         model = Model() 
         self.cView = ComparasionView(model)
