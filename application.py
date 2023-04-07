@@ -9,14 +9,15 @@ class App(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.title = 'PyQt5 tabs - pythonspot.com'
+        self.BACKGROUND_COLOR = '#D6D6D6'
+        self.title = 'Instance segmentation video of traffic objects'
         self.left = 200
         self.top = 100
         self.width = 1500
         self.height = 850
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
-        self.setStyleSheet("background-color: #D6D6D6;")
+        self.setStyleSheet('background-color:'+ self.BACKGROUND_COLOR)
         self.table_widget = MyTableWidget(self)
         self.setCentralWidget(self.table_widget)
         self.show()
@@ -60,11 +61,11 @@ class MyTableWidget(QWidget):
 
         self.comparasionTab.layout = QGridLayout(self)
         self.comparasionTab.setLayout(self.comparasionTab.layout)
-        self.comparasionTab.layout.addWidget(self.cView.leftComboBox,0,1,1,1,Qt.AlignmentFlag.AlignCenter)
-        self.comparasionTab.layout.addWidget(self.cView.rightComboBox,0,4,1,1,Qt.AlignmentFlag.AlignCenter)
-        self.comparasionTab.layout.addWidget(self.cView.startButton,1,0,1,6,Qt.AlignmentFlag.AlignCenter)
-        self.comparasionTab.layout.addWidget(self.cView.leftMediaplayerWidget,2,0,3,3,Qt.AlignmentFlag.AlignHCenter)
-        self.comparasionTab.layout.addWidget(self.cView.rightMediaplayerWidget,2,3,3,3,Qt.AlignmentFlag.AlignHCenter)
+        self.comparasionTab.layout.addWidget(self.cView.leftComboBox,0,1,1,1)#,Qt.AlignmentFlag.AlignCenter)
+        self.comparasionTab.layout.addWidget(self.cView.rightComboBox,0,4,1,1)#,Qt.AlignmentFlag.AlignCenter)
+        self.comparasionTab.layout.addWidget(self.cView.startButton,1,2,1,2)#,Qt.AlignmentFlag.AlignCenter)
+        self.comparasionTab.layout.addWidget(self.cView.leftMediaplayerWidget,2,0,3,3)#,Qt.AlignmentFlag.AlignHCenter)
+        self.comparasionTab.layout.addWidget(self.cView.rightMediaplayerWidget,2,3,3,3)#,Qt.AlignmentFlag.AlignHCenter)
         self.comparasionTab.layout.addWidget(self.cView.textBoxForLeftResults,5,0,2,3,Qt.AlignmentFlag.AlignCenter)
         self.comparasionTab.layout.addWidget(self.cView.textBoxForRightResults,5,3,2,3,Qt.AlignmentFlag.AlignCenter)
 
