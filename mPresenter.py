@@ -27,6 +27,7 @@ class MainPresenter(IMainPresenter):
     def onUploadVideoButtonClick(self):
         pathVideo, shortVideoName = self.model.uploadVideo()
         self.mView.runVideo(pathVideo, self.mView.leftMediaplayer)
+        self.mView.displayText(pathVideo,self.mView.textBoxVideoPath)
         self.mView.displayText(shortVideoName, self.mView.textBoxLeftVideoName)
         
 

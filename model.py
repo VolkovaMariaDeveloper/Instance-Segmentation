@@ -71,8 +71,8 @@ class Model(IVideoData,ITextData):
 
     def uploadLabel(self):
         self.labelPath, _ = QFileDialog.getOpenFileName(None, "Upload Video Label")
-        shortLabelName = self.getShortFileName(self.labelPath)
-        return shortLabelName
+        #shortLabelName = self.getShortFileName(self.labelPath)
+        return self.labelPath
 
     def runSegmentation(self, segmentationSystem):
         if segmentationSystem == "BlendMask":
