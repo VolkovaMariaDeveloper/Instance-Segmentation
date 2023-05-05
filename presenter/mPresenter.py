@@ -1,26 +1,14 @@
-from abc import ABC, abstractmethod
-from model import Model
+from model.wrapper.Wrapper import Wrapper
+import presenter.IPresenter as IPresenter
 
+class MainPresenter(object):
+    def __getattr__(self, item):
+        return IPresenter.__dict__[item]
 
-class IMainPresenter(ABC):
-    @abstractmethod
-    def onUploadVideoButtonClick():
-        pass
-    @abstractmethod
-    def onUploadLabelButtonClick():
-        pass
-    @abstractmethod
-    def onStartButtonClick():
-        pass
-    @abstractmethod
-    def onTabClick():
-        pass
-
-class MainPresenter(IMainPresenter):
     def __init__(self, mView):#:MainView):не получается передать объет класса со всеми его атрибутами
         self.mView = mView
 
-        self.model = Model()
+        self.model = Wrapper()
         #self.cView = ComparasionView(self.model)
         self.runningSystemsSet = set()
 

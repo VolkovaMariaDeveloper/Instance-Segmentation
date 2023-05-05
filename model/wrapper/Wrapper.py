@@ -1,52 +1,16 @@
 from abc import ABC
-
+from model.segmentation.ISegmentation import ISegmentation
+import model.segmentation.BlendMask as BlendMask
+import model.segmentation.PolarMask as PolarMask
+import model.segmentation.YOLACT as YOLACT
+from model.date_base.ITextData import ITextData
+from model.date_base.IVideoData import IVideoData
 from PyQt5.QtWidgets import QFileDialog
 from os import path
 import pathlib
 
-class IVideoData(ABC):
-    def uploadVideo():
-        pass
-    def uploadLabel():
-        pass
-    def saveVideo():
-        pass
-    
-class ITextData(ABC):
-    def saveResultsInTextFile():
-        pass
-    def searchResultsInTextFile(systemName):
-        pass
 
-class ISegmentation(ABC):
-    def segmentation():
-        pass
-    def test(self):
-        return "ISegmentation"
-
-class BlendMask(ISegmentation):
-    def __init__(self, videoPath):
-        pass
-    def test(self):
-        return "BlendMask"
-
-class PolarMask(ISegmentation):
-    def __init__(self, videoPath):
-        pass
-    def segmentation():
-        pass
-    def test(self):
-        return "PolarMask"
-
-class YOLACT(ISegmentation):
-    def __init__(self, videoPath):
-        pass
-    def segmentation():
-        pass 
-    def test(self):
-        return "YOLACT"  
-
-class Model(IVideoData,ITextData):
+class Wrapper(IVideoData,ITextData):
     def __init__(self):
         self.labelPath = ""
         self.videoPath= ""

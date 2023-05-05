@@ -1,17 +1,11 @@
-from abc import ABC, abstractmethod
-from model import Model
+from model.wrapper.Wrapper import Wrapper
+import presenter.IPresenter as IPresenter
 
+class ComparasionPresenter(object):
+    def __getattr__(self, item):
+        return IPresenter.__dict__[item]
 
-class IComparasionPresenter(ABC):
-    @abstractmethod
-    def onStartButtonClick():
-        pass
-    @abstractmethod
-    def onTabClick():
-        pass
-
-class ComparasionPresenter(IComparasionPresenter):
-    def __init__(self, cView, model:Model):
+    def __init__(self, cView, model:Wrapper):
         self.cView = cView
         self.model = model# нужна модель из MainPresenter
 
