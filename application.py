@@ -2,8 +2,10 @@ from PyQt5.QtWidgets import  QGridLayout,QMainWindow,QTabWidget, QVBoxLayout, QW
 from PyQt5.QtWidgets import (QApplication)
 import sys
 from PyQt5.QtCore import Qt
-from model import Model
-from view import MainView, ComparasionView
+from model.wrapper.Wrapper import Wrapper
+from view.MainView import MainView
+from view.ComparasionView import ComparasionView
+
 
 class App(QMainWindow):
     LEFT = 200
@@ -52,7 +54,7 @@ class MyTableWidget(QWidget):
         self.mainTab.layout.addWidget(self.mView.textBoxForResults,5,1,1,4,Qt.AlignmentFlag.AlignCenter)
         self.mainTab.layout.addWidget(self.mView.textBoxForRunningSystems,6,0,1,6, Qt.AlignmentFlag.AlignBottom)
 
-        model = Model() 
+        model = Wrapper() 
         self.cView = ComparasionView(model)
 
         self.comparasionTab.layout = QGridLayout(self)
