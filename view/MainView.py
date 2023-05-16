@@ -32,8 +32,8 @@ class MainView (IView):
         self.startButton.clicked.connect(self.startButtonClicked)
         self.startButton.setStyleSheet('background:'+ self.BUTTON_COLOR)
         
-        self.textBoxLeftVideoName = QLabel("LeftVideo")
-        self.textBoxRightVideoName = QLabel("RightVideo")
+        self.textBoxLeftVideoName = QLabel("")
+        self.textBoxRightVideoName = QLabel("")
        
         self.textBoxLabelName =  QLabel('No Lable...')
         self.textBoxLabelName.setAlignment(QtCore.Qt.AlignCenter)
@@ -53,7 +53,7 @@ class MainView (IView):
         self.widgetLabel = QWidget()
         self.widgetLabel.setLayout(self.layoutLabel)
 
-        self.textBoxForResults = QLabel("Results")
+        self.textBoxForResults = QLabel("")
         self.textBoxForResults.setAlignment(QtCore.Qt.AlignHCenter)
 
         self.textBoxSelectionHeader = QLabel("Select segmented system")
@@ -101,14 +101,14 @@ class MainView (IView):
         self.rightMediaplayerWidget.setLayout(self.layout)
         self.rightMediaplayer.setVideoOutput(self.rightVideoWidget)
        
-        self.textBoxForRunningSystems = QLabel("Running Systems")
+        self.textBoxForRunningSystems = QLabel("")
         self.textBoxForRunningSystems.setAlignment(QtCore.Qt.AlignHCenter)
 
         self.nameOfSystemSegmentation = 'BlendMask'
         self.mPresenter =  MainPresenter(self,self.cView, model)
 
     def uploadVideoButtonCliked(self):
-        #self.runDefaultState()
+        self.runDefaultState()
         self.mPresenter.onUploadVideoButtonClick()
         
     def uploadLabelButtonCliked(self):
@@ -121,9 +121,21 @@ class MainView (IView):
     def startButtonClicked(self):
         #self.runIndicator()    
         self.mPresenter.onStartButtonClick(self.nameOfSystemSegmentation)
-
-    def openTab():
-        pass
     
-    def runDefaultState():
-        pass
+    def runDefaultState(self):
+        self.textBoxForRunningSystems.setText("")
+        self.textBoxLeftVideoName.setText("")
+        self.textBoxRightVideoName.setText("")
+        self.rightVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
+        self.textBoxForResults.setText("")
+        self.textBoxLabelName.setText('No Lable...')
+        self.mPresenter.runningSystemsSet.clear()
+        self.cView.leftComboBox.clear()
+        self.cView.rightComboBox.clear()
+        self.cView.textBoxLeftVideoName.setText("")
+        self.cView.textBoxRightVideoName.setText("")
+        self.cView.textBoxForLeftResults.setText("")
+        self.cView.textBoxForRightResults.setText("")
+        self.cView.leftVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
+        self.cView.rightVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
+       

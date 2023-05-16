@@ -16,9 +16,7 @@ class IView(ABC):
     def runIndicator(self, persent, mediaplayer):
         pass
 
-    @abstractmethod
-    def openTab(self, tab):
-        pass
+
     @abstractmethod
     def runDefaultState():
         pass

@@ -22,16 +22,16 @@ class ComparasionView(IView):
         self.startButton.clicked.connect(self.startButtonClicked)
         self.startButton.setStyleSheet('background:' + self.BUTTON_COLOR)
 
-        self.textBoxLeftVideoName = QLabel("Left video")
+        self.textBoxLeftVideoName = QLabel("")
         self.textBoxLeftVideoName.setAlignment(QtCore.Qt.AlignHCenter)
 
-        self.textBoxRightVideoName = QLabel("Right video")
+        self.textBoxRightVideoName = QLabel("")
         self.textBoxRightVideoName.setAlignment(QtCore.Qt.AlignHCenter)
 
-        self.textBoxForLeftResults = QLabel("Left results")
+        self.textBoxForLeftResults = QLabel("")
         self.textBoxForLeftResults.setAlignment(QtCore.Qt.AlignHCenter)
 
-        self.textBoxForRightResults = QLabel("Right results")
+        self.textBoxForRightResults = QLabel("")
         self.textBoxForRightResults.setAlignment(QtCore.Qt.AlignHCenter)
 
         self.leftMediaplayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
@@ -74,6 +74,3 @@ class ComparasionView(IView):
 
     def startButtonClicked(self):
         self.cPresenter.onStartButtonClick()
-
-    def openTab():
-        pass
