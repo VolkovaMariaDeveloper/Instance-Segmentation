@@ -1,13 +1,12 @@
 from model.wrapper.Wrapper import Wrapper
-import presenter.IPresenter as IPresenter
+from presenter.IPresenter import IPresenter
 
-class MainPresenter(object):
-    def __getattr__(self, item):
-        return IPresenter.__dict__[item]
+class MainPresenter(IPresenter):
 
-    def __init__(self, mView):#:MainView):не получается передать объет класса со всеми его атрибутами
+
+    def __init__(self, mView,cView):#:MainView):не получается передать объет класса со всеми его атрибутами
         self.mView = mView
-
+        self.cView = cView
         self.model = Wrapper()
         #self.cView = ComparasionView(self.model)
         self.runningSystemsSet = set()
@@ -33,8 +32,9 @@ class MainPresenter(object):
         testName = self.model.runSegmentation(nameSystemSegmentation)
         systemsName = self.checkRunningSystems(testName)
         self.mView.displayText(systemsName, self.mView.textBoxForRunningSystems)
-
-        #self.cView.leftComboBox.addItem(testName)
+#!!!!Сделать проверку на уникальность
+        self.cView.leftComboBox.addItem(testName)
+        self.cView.rightComboBox.addItem(testName)
 
         
         #segmentatedVideoPath, shortSegmentedVideoName, quantitativeResults = self.model.runSegmentation(nameSystemSegmentation)

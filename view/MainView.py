@@ -5,16 +5,17 @@ from PyQt5 import QtGui, QtCore
 from presenter.mPresenter import MainPresenter
 
 from PyQt5.QtCore import Qt
-import view.IView as IView
+from view.IView import IView
 
-class MainView (object):
+class MainView (IView):
     BUTTON_COLOR =  "white"
     FRAME_COLOR = "#bababa"
     PATH_TO_IMAGE_FOLDER ="images/folderImg.png"
-    def __getattr__(self, item):
-        return IView.__dict__[item]
+    #def __getattr__(self, item):
+   #     return IView.__dict__[item]
 
-    def __init__(self):
+    def __init__(self, cView):
+        self.cView = cView
         self.empty = QWidget()
         self.uploadLabelButton = QPushButton("")
        
@@ -104,7 +105,7 @@ class MainView (object):
         self.textBoxForRunningSystems.setAlignment(QtCore.Qt.AlignHCenter)
 
         self.nameOfSystemSegmentation = 'BlendMask'
-        self.mPresenter =  MainPresenter(self)
+        self.mPresenter =  MainPresenter(self,self.cView)
 
     def uploadVideoButtonCliked(self):
         #self.runDefaultState()

@@ -1,9 +1,8 @@
 from model.wrapper.Wrapper import Wrapper
-import presenter.IPresenter as IPresenter
+from presenter.IPresenter import IPresenter
 
-class ComparasionPresenter(object):
-    def __getattr__(self, item):
-        return IPresenter.__dict__[item]
+class ComparasionPresenter(IPresenter):
+
 
     def __init__(self, cView, model:Wrapper):
         self.cView = cView

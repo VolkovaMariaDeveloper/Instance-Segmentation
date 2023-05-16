@@ -4,13 +4,11 @@ from PyQt5.QtMultimediaWidgets import QVideoWidget
 from PyQt5 import  QtCore
 from presenter.cPresenter import ComparasionPresenter
 from PyQt5.QtCore import Qt
-import view.IView as IView
+from view.IView import IView
 
-class ComparasionView(object):
+class ComparasionView(IView):
     BUTTON_COLOR =  "white"
     FRAME_COLOR ="#bababa"
-    def __getattr__(self, item):
-        return IView.__dict__[item]
 
     def __init__(self, model):
         self.leftComboBox = QComboBox()

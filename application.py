@@ -39,7 +39,9 @@ class MyTableWidget(QWidget):
         self.tabs.setMinimumSize(1500,850)
         self.tabs.setDocumentMode(False)
 
-        self.mView = MainView()
+        model = Wrapper() 
+        self.cView = ComparasionView(model)
+        self.mView = MainView(self.cView)
 
         self.mainTab.layout = QGridLayout(self)
         self.mainTab.setLayout(self.mainTab.layout)
@@ -54,8 +56,8 @@ class MyTableWidget(QWidget):
         self.mainTab.layout.addWidget(self.mView.textBoxForResults,5,1,1,4,Qt.AlignmentFlag.AlignCenter)
         self.mainTab.layout.addWidget(self.mView.textBoxForRunningSystems,6,0,1,6, Qt.AlignmentFlag.AlignBottom)
 
-        model = Wrapper() 
-        self.cView = ComparasionView(model)
+        #model = Wrapper() 
+        #self.cView = ComparasionView(model)
 
         self.comparasionTab.layout = QGridLayout(self)
         self.comparasionTab.setLayout(self.comparasionTab.layout)
