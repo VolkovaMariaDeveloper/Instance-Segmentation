@@ -18,6 +18,7 @@ class Wrapper(IVideoData,ITextData):
         self.segmentatedVideoPath = ""
         self.mainDirectory = ""
         self.nameVideo = ""
+        self.resultDictionary = {}
         
     def getShortFileName(self,full_name):
         full_name = path.basename(full_name)
@@ -46,8 +47,10 @@ class Wrapper(IVideoData,ITextData):
         elif segmentationSystem == "YOLACT":
             self.segmentationSystem = YOLACT(self.videoPath)
             #quantitativeResults - словарь {FPS: значение, numberOfObjects: значение, IoU: значение}
-        stringName = self.segmentationSystem.test()
-        return stringName
+        videoPath = self.segmentationSystem.test() # запуск сегментации определенной системы, если будут метки, то здесь их принимаем и записываем в словарь
+        self.resultDictionary[segmentationSystem + "_videoPath"] = videoPath 
+
+        return self.resultDictionary
         #segmentedVideo, quantitativeResults = self.segmentationSystem.segmentation(self.videoPath, self.labelPath)
        # self.segmentatedVideoPath = self.saveVideo(segmentedVideo)
         #self.saveResultsInTextFile(quantitativeResults)
@@ -60,7 +63,9 @@ class Wrapper(IVideoData,ITextData):
 
     def saveResultsInTextFile():# для каждого видеофайла создает отдельный текстовый файл с результатами систем в формате json[BlendMask:{путь к сегментированному видео +словарь результатов}, PolarMask, YOLACT]
         pass
-    def searchResultsInTextFile():
-        pass   
+    def searchResultsInTextFile(self):
+        file = open(self.mainDirectory + "result/result.txt")
+        dictionary = file.read()
+        return dictionary  
 
 

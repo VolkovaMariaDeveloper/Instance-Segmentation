@@ -5,4 +5,4 @@ class BlendMask(ISegmentation):
     def __init__(self, videoPath):
         pass
     def test(self):
-        return "BlendMask"
+        return "D:/University/Magistracy/Segmentation/application/start/video/1.mkv"

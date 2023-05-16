@@ -7,4 +7,5 @@ class YOLACT(ISegmentation):
     def segmentation():
         pass 
     def test(self):
-        return "YOLACT"  
+        return "D:/University/Magistracy/Segmentation/application/start/video/1.mkv"
+ 
