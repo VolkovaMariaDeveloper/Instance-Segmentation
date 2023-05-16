@@ -7,4 +7,4 @@ class PolarMask(ISegmentation):
     def segmentation():
         pass
     def test(self):
-        return "PolarMask"
+        return "D:/University/Magistracy/Segmentation/application/start/video/1.mkv"

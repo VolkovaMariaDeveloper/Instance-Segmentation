@@ -41,7 +41,7 @@ class MyTableWidget(QWidget):
 
         model = Wrapper() 
         self.cView = ComparasionView(model)
-        self.mView = MainView(self.cView)
+        self.mView = MainView(self.cView, model)
 
         self.mainTab.layout = QGridLayout(self)
         self.mainTab.setLayout(self.mainTab.layout)

@@ -4,11 +4,10 @@ from presenter.IPresenter import IPresenter
 class MainPresenter(IPresenter):
 
 
-    def __init__(self, mView,cView):#:MainView):не получается передать объет класса со всеми его атрибутами
+    def __init__(self, mView,cView, model):
         self.mView = mView
         self.cView = cView
-        self.model = Wrapper()
-        #self.cView = ComparasionView(self.model)
+        self.model = model
         self.runningSystemsSet = set()
 
     def onUploadVideoButtonClick(self):
@@ -17,7 +16,6 @@ class MainPresenter(IPresenter):
         self.mView.displayText(pathVideo,self.mView.textBoxVideoPath)
         self.mView.displayText(shortVideoName, self.mView.textBoxLeftVideoName)
         
-
     def onUploadLabelButtonClick(self):
         shortLabelName = self.model.uploadLabel()
         self.mView.displayText(shortLabelName,self.mView.textBoxLabelName)
@@ -27,14 +25,14 @@ class MainPresenter(IPresenter):
         string = ', '.join(self.runningSystemsSet)
         return string
 
-
     def onStartButtonClick(self, nameSystemSegmentation):
-        testName = self.model.runSegmentation(nameSystemSegmentation)
-        systemsName = self.checkRunningSystems(testName)
+        resultDict = self.model.runSegmentation(nameSystemSegmentation)
+        systemsName = self.checkRunningSystems(nameSystemSegmentation)
         self.mView.displayText(systemsName, self.mView.textBoxForRunningSystems)
-#!!!!Сделать проверку на уникальность
-        self.cView.leftComboBox.addItem(testName)
-        self.cView.rightComboBox.addItem(testName)
+
+        if (self.cView.leftComboBox.findText(nameSystemSegmentation)==-1):
+            self.cView.leftComboBox.addItem(nameSystemSegmentation)
+            self.cView.rightComboBox.addItem(nameSystemSegmentation)
 
         
         #segmentatedVideoPath, shortSegmentedVideoName, quantitativeResults = self.model.runSegmentation(nameSystemSegmentation)
@@ -43,6 +41,4 @@ class MainPresenter(IPresenter):
        #self.mView.displayText(quantitativeResults, self.mView.textBoxForResults)# возможно придется создать функцию, которая к приемлемому виду приведет результаты
        # self.mView.displayText(nameSystemSegmentation, self.mView.TextBoxForRunningSystems)
        # self.cView.addSystemForComparation(nameSystemSegmentation)
-        
-    def onTabClick():
-        pass
+

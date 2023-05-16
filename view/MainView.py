@@ -14,7 +14,7 @@ class MainView (IView):
     #def __getattr__(self, item):
    #     return IView.__dict__[item]
 
-    def __init__(self, cView):
+    def __init__(self, cView, model):
         self.cView = cView
         self.empty = QWidget()
         self.uploadLabelButton = QPushButton("")
@@ -105,7 +105,7 @@ class MainView (IView):
         self.textBoxForRunningSystems.setAlignment(QtCore.Qt.AlignHCenter)
 
         self.nameOfSystemSegmentation = 'BlendMask'
-        self.mPresenter =  MainPresenter(self,self.cView)
+        self.mPresenter =  MainPresenter(self,self.cView, model)
 
     def uploadVideoButtonCliked(self):
         #self.runDefaultState()

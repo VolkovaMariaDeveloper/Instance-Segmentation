@@ -4,6 +4,3 @@ class IPresenter(ABC):
     @abstractmethod
     def onStartButtonClick():
         pass
-    @abstractmethod
-    def onTabClick():
-        pass

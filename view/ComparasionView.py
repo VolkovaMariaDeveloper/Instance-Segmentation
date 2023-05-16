@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QGridLayout,QComboBox, QPushButton,QLabel, QWidget
+from PyQt5.QtWidgets import QGridLayout,QComboBox, QPushButton,QLabel, QWidget, QErrorMessage
 from PyQt5.QtMultimedia import QMediaPlayer
 from PyQt5.QtMultimediaWidgets import QVideoWidget
 from PyQt5 import  QtCore
@@ -11,6 +11,7 @@ class ComparasionView(IView):
     FRAME_COLOR ="#bababa"
 
     def __init__(self, model):
+        self.nonStartedSystemError = QErrorMessage()
         self.leftComboBox = QComboBox()
         self.rightComboBox = QComboBox()
         self.leftComboBox.activated[str].connect(
