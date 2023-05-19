@@ -8,7 +8,7 @@ from model.date_base.IVideoData import IVideoData
 from PyQt5.QtWidgets import QFileDialog
 from os import path
 import pathlib
-
+from pathlib import Path
 
 class Wrapper(IVideoData,ITextData):
     def __init__(self):
@@ -29,7 +29,7 @@ class Wrapper(IVideoData,ITextData):
         self.videoPath, _ = QFileDialog.getOpenFileName(None, "Upload Video")#, QDir.homePath())
         shortName = self.getShortFileName(self.videoPath)
         self.nameVideo = shortName
-        path = pathlib.WindowsPath(self.videoPath)
+        path = Path(self.videoPath)
         pathsList = list(path.parents)
         self.mainDirectory = pathsList[1] #сохраняется путь к главной директории с папками Video, Labels,SegmentedVideos
         return self.videoPath, shortName
