@@ -14,6 +14,7 @@ class ComparasionPresenter(IPresenter):
         videoPath = self.model.resultDictionary.get(leftSystem+"_videoPath") #создать текстовые константы
         self.cView.runVideo(videoPath,self.cView.leftMediaplayer)
         self.cView.displayText("left output Results", self.cView.textBoxForLeftResults)
+        print(videoPath)
         shortLeftVideoName = self.model.getShortFileName(videoPath)
         self.cView.displayText(shortLeftVideoName, self.cView.textBoxLeftVideoName)
 

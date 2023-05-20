@@ -61,7 +61,7 @@ class MainView (IView):
         
         self.firstRadioButton = QRadioButton('BlendMask')
         self.firstRadioButton.setChecked(True)
-        self.secondRadioButton = QRadioButton('PolarMask')
+        self.secondRadioButton = QRadioButton('ConditionalConvolutions')
         self.thirdRadioButton = QRadioButton('YOLACT')
 
         self.layoutRadioButton = QGridLayout()
@@ -81,6 +81,8 @@ class MainView (IView):
 
         self.leftMediaplayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         self.leftVideoWidget = QVideoWidget()
+        self.leftVideoWidget.setMaximumWidth(880)
+        self.leftVideoWidget.setMaximumHeight(320)
         self.leftVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
         self.leftMediaplayerWidget = QWidget() 
 
