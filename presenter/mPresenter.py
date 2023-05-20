@@ -15,7 +15,7 @@ class MainPresenter(IPresenter):
         self.mView.runVideo(pathVideo, self.mView.leftMediaplayer)
         self.mView.displayText(pathVideo,self.mView.textBoxVideoPath)
         self.mView.displayText(shortVideoName, self.mView.textBoxLeftVideoName)
-        
+
     def onUploadLabelButtonClick(self):
         shortLabelName = self.model.uploadLabel()
         self.mView.displayText(shortLabelName,self.mView.textBoxLabelName)

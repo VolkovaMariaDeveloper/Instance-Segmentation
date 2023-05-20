@@ -14,8 +14,7 @@ class ComparasionView(IView):
         self.nonStartedSystemError = QErrorMessage()
         self.leftComboBox = QComboBox()
         self.rightComboBox = QComboBox()
-        self.leftComboBox.activated[str].connect(
-            self.onSelectedLeftComboBox)
+        self.leftComboBox.activated[str].connect(self.onSelectedLeftComboBox)
         self.leftComboBox.activated[str].connect(self.onSelectedRightComboBox)
 
         self.startButton = QPushButton("Start")
@@ -35,7 +34,10 @@ class ComparasionView(IView):
         self.textBoxForRightResults.setAlignment(QtCore.Qt.AlignHCenter)
 
         self.leftMediaplayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
-        self.leftVideoWidget = QVideoWidget()
+        self.leftVideoWidget = QVideoWidget()        
+        self.leftVideoWidget.setMaximumWidth(880)
+        self.leftVideoWidget.setMaximumHeight(320)
+
         self.leftVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
         self.leftMediaplayerWidget = QWidget() 
 
@@ -47,6 +49,8 @@ class ComparasionView(IView):
 
         self.rightMediaplayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         self.rightVideoWidget = QVideoWidget()
+        self.rightVideoWidget.setMaximumWidth(880)
+        self.rightVideoWidget.setMaximumHeight(320)
         self.rightVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
         self.rightMediaplayerWidget = QWidget()
 

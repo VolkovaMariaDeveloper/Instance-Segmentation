@@ -1,7 +1,7 @@
 from abc import ABC
 from model.segmentation.ISegmentation import ISegmentation
 from model.segmentation.BlendMask import BlendMask
-from model.segmentation.PolarMask import PolarMask
+from model.segmentation.CondInst import CondInst
 from model.segmentation.YOLACT import YOLACT
 from model.date_base.ITextData import ITextData
 from model.date_base.IVideoData import IVideoData
@@ -26,6 +26,7 @@ class Wrapper(IVideoData,ITextData):
         return name
   
     def uploadVideo(self):
+        self.resultDictionary.clear()
         self.videoPath, _ = QFileDialog.getOpenFileName(None, "Upload Video")#, QDir.homePath())
         shortName = self.getShortFileName(self.videoPath)
         self.nameVideo = shortName
@@ -39,16 +40,23 @@ class Wrapper(IVideoData,ITextData):
         #shortLabelName = self.getShortFileName(self.labelPath)
         return self.labelPath
 
-    def runSegmentation(self, segmentationSystem):
-        if segmentationSystem == "BlendMask":
-            self.segmentationSystem = BlendMask(self.videoPath)
-        elif segmentationSystem == "PolarMask":
-            self.segmentationSystem = PolarMask(self.videoPath)
-        elif segmentationSystem == "YOLACT":
-            self.segmentationSystem = YOLACT(self.videoPath)
+    def createOutputPath(self):
+        path = "/home/mary/video/output/" + self.segmentationSystem.name +"/"+ self.nameVideo+".mkv"
+        return path
+
+    def runSegmentation(self, segmentationSystemName):
+        if segmentationSystemName == "BlendMask":
+            self.segmentationSystem = BlendMask()
+        elif segmentationSystemName == "ConditionalConvolutions":
+            self.segmentationSystem = CondInst()
+        elif segmentationSystemName == "YOLACT":
+            self.segmentationSystem = YOLACT()
             #quantitativeResults - словарь {FPS: значение, numberOfObjects: значение, IoU: значение}
-        videoPath = self.segmentationSystem.test() # запуск сегментации определенной системы, если будут метки, то здесь их принимаем и записываем в словарь
-        self.resultDictionary[segmentationSystem + "_videoPath"] = videoPath 
+        self.segmentationSystem.test(self.videoPath) 
+        # возможно есть смысл системе сегментации возвращать путь к сохраненному видео
+        # запуск сегментации определенной системы, если будут метки, то здесь их принимаем и записываем в словарь
+        print(segmentationSystemName + "_videoPath")
+        self.resultDictionary[segmentationSystemName + "_videoPath"] = self.createOutputPath() 
 
         return self.resultDictionary
         #segmentedVideo, quantitativeResults = self.segmentationSystem.segmentation(self.videoPath, self.labelPath)
