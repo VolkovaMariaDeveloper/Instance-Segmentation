@@ -1,11 +1,10 @@
+import sys
 from PyQt5.QtWidgets import  QGridLayout,QMainWindow,QTabWidget, QVBoxLayout, QWidget
 from PyQt5.QtWidgets import (QApplication)
-import sys
 from PyQt5.QtCore import Qt
-from model.wrapper.Wrapper import Wrapper
-from view.MainView import MainView
-from view.ComparasionView import ComparasionView
-
+from source.model.wrapper.Wrapper import Wrapper
+from source.view.MainView import MainView
+from source.view.ComparasionView import ComparasionView
 
 class App(QMainWindow):
     LEFT = 200
@@ -15,7 +14,7 @@ class App(QMainWindow):
     BACKGROUND_COLOR = '#D6D6D6'
     def __init__(self):
         super().__init__()
-        self.title = 'Instance segmentation video of traffic objects'
+        self.title = 'Обучающее приложение сегментации объектов дорожного видео'
         self.setWindowTitle(self.title)
         self.setGeometry(self.LEFT, self.TOP, self.WIDTH, self.HEIGTH)
         self.setStyleSheet('background-color:'+ self.BACKGROUND_COLOR)
@@ -27,15 +26,15 @@ class MyTableWidget(QWidget):
     
     def __init__(self, parent):
         super(QWidget, self).__init__(parent)
-        self.setStyleSheet('font-size: 15pt; font-family: Times; background: #D6D6D6;')#ВЫНЕСТИ КОНСТАНТЫ!!!!!!
+        self.setStyleSheet('font-size: 15pt; font-family: Arial; background: #D6D6D6;')#ВЫНЕСТИ КОНСТАНТЫ!!!!!!
         self.layout = QVBoxLayout(self)
         self.tabs = QTabWidget()
 
         self.mainTab = QWidget()
         self.comparasionTab = QWidget()
 
-        self.tabs.addTab(self.mainTab,"Main")
-        self.tabs.addTab(self.comparasionTab,"Comparasion")
+        self.tabs.addTab(self.mainTab,"Главная")
+        self.tabs.addTab(self.comparasionTab,"Сравнение результатов")
         self.tabs.setMinimumSize(1500,850)
         self.tabs.setDocumentMode(False)
 
@@ -46,18 +45,22 @@ class MyTableWidget(QWidget):
         self.mainTab.layout = QGridLayout(self)
         self.mainTab.setLayout(self.mainTab.layout)
 
-        self.mainTab.layout.addWidget(self.mView.widgetUploadVideo,0,0,1,3)
-        self.mainTab.layout.addWidget(self.mView.widgetLabel,1,0,1,3)
-        self.mainTab.layout.addWidget(self.mView.widgetRadioButton,0,3,2,3)
+        self.mainTab.layout.addWidget(self.mView.textBoxSelectionHeader,0,3,0,3)
 
-        self.mainTab.layout.addWidget(self.mView.leftMediaplayerWidget,2,0,3,3)
-        self.mainTab.layout.addWidget(self.mView.rightMediaplayerWidget,2,3,3,3)
+        self.mainTab.layout.addWidget(self.mView.widgetUploadVideo,1,0,1,3,Qt.AlignmentFlag.AlignTop)
+        self.mainTab.layout.addWidget(self.mView.widgetLabel,2,0,1,3,Qt.AlignmentFlag.AlignTop)
+        self.mainTab.layout.addWidget(self.mView.widgetRadioButton,1,3,2,3,Qt.AlignmentFlag.AlignTop)
 
-        self.mainTab.layout.addWidget(self.mView.textBoxForResults,5,1,1,4,Qt.AlignmentFlag.AlignCenter)
-        self.mainTab.layout.addWidget(self.mView.textBoxForRunningSystems,6,0,1,6, Qt.AlignmentFlag.AlignBottom)
+        #self.mainTab.layout.addWidget(self.mView.startButton,4,3,1,3,Qt.AlignmentFlag.AlignTop)AlignBottom
+
+        self.mainTab.layout.addWidget(self.mView.leftMediaplayerWidget,3,0,6,3)
+        self.mainTab.layout.addWidget(self.mView.rightMediaplayerWidget,3,3,6,3)
+
+        self.mainTab.layout.addWidget(self.mView.textBoxForResults,9,1,1,4,Qt.AlignmentFlag.AlignTop)
+        self.mainTab.layout.addWidget(self.mView.textBoxForRunningSystems,11,0,1,6, Qt.AlignmentFlag.AlignBottom)
 
         #model = Wrapper() 
-        #self.cView = ComparasionView(model)
+        #self.cView = ComparasionView(model)AlignTop
 
         self.comparasionTab.layout = QGridLayout(self)
         self.comparasionTab.setLayout(self.comparasionTab.layout)
