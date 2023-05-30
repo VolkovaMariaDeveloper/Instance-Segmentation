@@ -13,7 +13,7 @@ from pathlib import Path
 class Wrapper(IVideoData,ITextData):
     def __init__(self):
         self.labelPath = ""
-        self.videoPath= "~/application/Instance-Segmentation/data/output"
+        self.videoPath= "~/application/Instance-Segmentation/data/input/short.mp4"
         self.segmentationSystem = ISegmentation()#PolarMask(self.videoPath)
         self.segmentatedVideoPath = ""
         self.mainDirectory = ""
@@ -48,7 +48,7 @@ class Wrapper(IVideoData,ITextData):
         if segmentationSystemName == "BlendMask":
             self.segmentationSystem = BlendMask()
         elif segmentationSystemName == "CondInst":
-            self.segmentationSystem = CondInst()
+            self.segmentationSystem = CondInst(self.videoPath)
         elif segmentationSystemName == "YOLACT":
             self.segmentationSystem = YOLACT()
             #quantitativeResults - словарь {FPS: значение, numberOfObjects: значение, IoU: значение}
