@@ -13,7 +13,7 @@ from pathlib import Path
 class Wrapper(IVideoData,ITextData):
     def __init__(self):
         self.labelPath = ""
-        self.videoPath= ""
+        self.videoPath= "~/application/Instance-Segmentation/data/output"
         self.segmentationSystem = ISegmentation()#PolarMask(self.videoPath)
         self.segmentatedVideoPath = ""
         self.mainDirectory = ""
