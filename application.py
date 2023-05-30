@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt
 from source.model.wrapper.Wrapper import Wrapper
 from source.view.MainView import MainView
 from source.view.ComparasionView import ComparasionView
+import warnings
 
 class App(QMainWindow):
     LEFT = 200
@@ -77,6 +78,7 @@ class MyTableWidget(QWidget):
         
         
 if __name__ == '__main__':
+    warnings.filterwarnings("ignore")
     app = QApplication(sys.argv)
     ex = App()
     sys.exit(app.exec_())
