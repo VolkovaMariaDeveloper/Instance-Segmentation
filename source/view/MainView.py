@@ -20,7 +20,7 @@ class MainView (IView):
 
         self.pbar = QProgressBar()
         self.pbar.setValue(0)
-        #self.pbar.hide()
+        self.pbar.hide()
         #self.pbar.setVisible(False)
         
 
@@ -105,6 +105,8 @@ class MainView (IView):
         self.rightMediaplayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         self.rightVideoWidget = QVideoWidget()
         self.rightVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
+        self.rightVideoWidget.setMaximumWidth(750)
+        self.rightVideoWidget.setMaximumHeight(320)
         self.rightMediaplayerWidget = QWidget()
 
         self.layout = QGridLayout()

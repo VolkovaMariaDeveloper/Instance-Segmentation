@@ -17,7 +17,7 @@ class Wrapper(IVideoData,ITextData):
         self.segmentationSystem = ISegmentation()#PolarMask(self.videoPath)
         self.segmentatedVideoPath = ""
         self.mainDirectory = ""
-        self.nameVideo = ""
+        self.nameVideo = "short"
         self.resultDictionary = {}
         
     def getShortFileName(self,full_name):
@@ -40,8 +40,10 @@ class Wrapper(IVideoData,ITextData):
         #shortLabelName = self.getShortFileName(self.labelPath)
         return self.labelPath
 
+#TODO создать универсальный относительный путь
+
     def createOutputPath(self):
-        path = "/home/mary/video/output/" + self.segmentationSystem.name +"/"+ self.nameVideo+".mkv"
+        path = "/home/mary/application/Instance-Segmentation/data/output/" + self.segmentationSystem.name +"/"+ self.nameVideo+".mp4"
         return path
 
     def runSegmentation(self,mpresenter, segmentationSystemName):
@@ -56,7 +58,7 @@ class Wrapper(IVideoData,ITextData):
         self.segmentationSystem.test(self.videoPath) 
         # возможно есть смысл системе сегментации возвращать путь к сохраненному видео
         # запуск сегментации определенной системы, если будут метки, то здесь их принимаем и записываем в словарь
-        print(segmentationSystemName + "_videoPath")
+        #print(segmentationSystemName + "_videoPath")
         self.resultDictionary[segmentationSystemName + "_videoPath"] = self.createOutputPath() 
 
         return self.resultDictionary
