@@ -44,11 +44,12 @@ class Wrapper(IVideoData,ITextData):
         path = "/home/mary/video/output/" + self.segmentationSystem.name +"/"+ self.nameVideo+".mkv"
         return path
 
-    def runSegmentation(self, segmentationSystemName):
+    def runSegmentation(self,mpresenter, segmentationSystemName):
+        #TODO обработать вариант с тем, что придет что-то неожиданное!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if segmentationSystemName == "BlendMask":
             self.segmentationSystem = BlendMask()
         elif segmentationSystemName == "CondInst":
-            self.segmentationSystem = CondInst(self.videoPath)
+            self.segmentationSystem = CondInst(self.videoPath, mpresenter)
         elif segmentationSystemName == "YOLACT":
             self.segmentationSystem = YOLACT()
             #quantitativeResults - словарь {FPS: значение, numberOfObjects: значение, IoU: значение}

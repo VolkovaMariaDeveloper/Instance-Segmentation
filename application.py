@@ -52,10 +52,11 @@ class MyTableWidget(QWidget):
         self.mainTab.layout.addWidget(self.mView.widgetLabel,2,0,1,3,Qt.AlignmentFlag.AlignTop)
         self.mainTab.layout.addWidget(self.mView.widgetRadioButton,1,3,2,3,Qt.AlignmentFlag.AlignTop)
 
-        #self.mainTab.layout.addWidget(self.mView.startButton,4,3,1,3,Qt.AlignmentFlag.AlignTop)AlignBottom
+        
 
         self.mainTab.layout.addWidget(self.mView.leftMediaplayerWidget,3,0,6,3)
         self.mainTab.layout.addWidget(self.mView.rightMediaplayerWidget,3,3,6,3)
+        #self.mainTab.layout.addWidget(self.mView.pbar,3,3,6,3)
 
         self.mainTab.layout.addWidget(self.mView.textBoxForResults,9,1,1,4,Qt.AlignmentFlag.AlignTop)
         self.mainTab.layout.addWidget(self.mView.textBoxForRunningSystems,11,0,1,6, Qt.AlignmentFlag.AlignBottom)

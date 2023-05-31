@@ -1,5 +1,6 @@
 from source.model.wrapper.Wrapper import Wrapper
 from source.presenter.IPresenter import IPresenter
+from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
 
 class MainPresenter(IPresenter):
 
@@ -25,8 +26,14 @@ class MainPresenter(IPresenter):
         string = ', '.join(self.runningSystemsSet)
         return string
 
+
+    #@pyqtSlot(int)
+    def changeValuePbar(self, val):
+        self.mView.pbar.setValue(val)
+
     def onStartButtonClick(self, nameSystemSegmentation):
-        resultDict = self.model.runSegmentation(nameSystemSegmentation)
+
+        resultDict = self.model.runSegmentation(self, nameSystemSegmentation)
         systemsName = self.checkRunningSystems(nameSystemSegmentation)
         self.mView.displayText(systemsName, self.mView.textBoxForRunningSystems)
 

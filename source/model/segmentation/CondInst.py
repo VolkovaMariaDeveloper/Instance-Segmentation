@@ -5,6 +5,11 @@ import time
 from subprocess import PIPE, run
 import warnings
 import os
+from PyQt5.QtCore import Qt, pyqtSignal, QObject
+
+
+class AnyObjects(QObject):
+    changed_value = pyqtSignal(int)
 
 
 class CondInst(ISegmentation):
@@ -12,10 +17,14 @@ class CondInst(ISegmentation):
     OUTPUT_PATH = "~/video/output/CondInst"
     MODEL_WEIGHTS = "training_dir/CondInst_MS_R_50_BiFPN_3x_sem.pth"
     CONFIDENCE_THRESHOLD = 0.35
-    def __init__(self,videoPath):
+    
+    def __init__(self,videoPath, mPresenter):
         self.name = "CondInst"
         self.argumentsDictionary ={} #возможно его следует создавать не здесь
         self.videoPath = videoPath
+        self.anyObjects = AnyObjects()
+        self.mPresenter = mPresenter
+
     def segmentation(self, videoPath):
         self.argumentsDictionary["video_input"] = videoPath
         self.argumentsDictionary["config_file"] = self.CONFIG_FILE
@@ -40,6 +49,7 @@ class CondInst(ISegmentation):
             result = subprocess.run(activateEnv + comand,stdout=PIPE, stderr=file, universal_newlines=True, shell = True)
 
     def parsingString(self,string):
+        
         str = ""
         for i in string:
             if (i =="%"):
@@ -49,24 +59,27 @@ class CondInst(ISegmentation):
 
 
     def printpipe(self):
+        
         persent = ""
         while (persent!="100"):
             with open("/home/mary/application/Instance-Segmentation/source/test.log", "r") as file:
-                #fillFile = file.read()
                 persent = self.parsingString(file.readlines()[-1])
-                print(persent)#.decode('cp1251'))
-                time.sleep(1)
+                print(persent)# передавать значения на Главную вкладку в отдельном потоке через презентер?
+                self.anyObjects.changed_value.emit(int(persent))
+                time.sleep(0.5)
 
 
     def test(self,videoPath):
         
+        self.anyObjects.changed_value.connect(self.mPresenter.changeValuePbar)#функция из presentor
         threads = []
         threads.append(th.Thread(target=self.cmd))
         threads.append(th.Thread(target=self.printpipe))
  
         for i in threads:
             i.start()
-            time.sleep(3)
+            time.sleep(6)
+        
         #print(result.stderr)
        # print(result.stdout)
         

@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QGridLayout, QPushButton,QRadioButton,QButtonGroup, QLabel, QWidget
+from PyQt5.QtWidgets import QGridLayout, QPushButton,QRadioButton,QButtonGroup, QLabel, QWidget, QProgressBar
 from PyQt5.QtMultimedia import QMediaPlayer
 from PyQt5.QtMultimediaWidgets import QVideoWidget
 from PyQt5 import QtGui, QtCore
@@ -18,6 +18,12 @@ class MainView (IView):
         self.cView = cView
         self.empty = QWidget()
 
+        self.pbar = QProgressBar()
+        self.pbar.setValue(0)
+        #self.pbar.hide()
+        #self.pbar.setVisible(False)
+        
+
         self.uploadLabelButton = QPushButton("")
         self.uploadLabelButton.clicked.connect(self.uploadLabelButtonCliked)
         self.uploadLabelButton.setIcon(QtGui.QIcon(self.PATH_TO_IMAGE_FOLDER))
@@ -36,6 +42,8 @@ class MainView (IView):
         
         self.textBoxLeftVideoName = QLabel("")
         self.textBoxRightVideoName = QLabel("")
+
+        
        
         self.textBoxLabelName =  QLabel('Разметки нет...')
         self.textBoxLabelName.setAlignment(QtCore.Qt.AlignCenter)
@@ -102,6 +110,7 @@ class MainView (IView):
         self.layout = QGridLayout()
         self.layout.addWidget(self.rightVideoWidget,0,0,6,6)
         self.layout.addWidget(self.textBoxRightVideoName,6,0,1,6,Qt.AlignmentFlag.AlignCenter)
+        self.layout.addWidget(self.pbar,0,0,6,6)
         self.rightMediaplayerWidget.setLayout(self.layout)
         self.rightMediaplayer.setVideoOutput(self.rightVideoWidget)
        
