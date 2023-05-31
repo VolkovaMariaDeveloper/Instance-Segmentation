@@ -17,6 +17,7 @@ class CondInst(ISegmentation):
     OUTPUT_PATH = "~/video/output/CondInst"
     MODEL_WEIGHTS = "training_dir/CondInst_MS_R_50_BiFPN_3x_sem.pth"
     CONFIDENCE_THRESHOLD = 0.35
+    LOG_FILE ="/home/mary/application/Instance-Segmentation/source/test.log"
     
     def __init__(self,videoPath, mPresenter):
         self.name = "CondInst"
@@ -24,6 +25,8 @@ class CondInst(ISegmentation):
         self.videoPath = videoPath
         self.anyObjects = AnyObjects()
         self.mPresenter = mPresenter
+        self.persent = "0"
+        self.averageFPS = 0.0
 
     def segmentation(self, videoPath):
         self.argumentsDictionary["video_input"] = videoPath
@@ -45,11 +48,10 @@ class CondInst(ISegmentation):
     --confidence-threshold 0.35 \
     --opts MODEL.WEIGHTS ~/application/Instance-Segmentation/AdelaiDet/training_dir/CondInst_MS_R_50_BiFPN_3x_sem.pth "
         activateEnv = '. $CONDA_PREFIX/etc/profile.d/conda.sh && conda activate adelai-det &&'
-        with open("/home/mary/application/Instance-Segmentation/source/test.log", "w+") as file:
+        with open(self.LOG_FILE, "w+") as file:
             result = subprocess.run(activateEnv + comand,stdout=PIPE, stderr=file, universal_newlines=True, shell = True)
 
     def parsingString(self,string):
-        
         str = ""
         for i in string:
             if (i =="%"):
@@ -57,28 +59,54 @@ class CondInst(ISegmentation):
             else:
                 str+=i
 
+    def getSignal(self):
+        while (self.persent!="100"):
+            persent = self.persent
+            if (persent==None):
+                persent = 0
+            self.mPresenter.changeValuePbar(int(persent))
+            time.sleep(0.2)
+        self.mPresenter.changeValuePbar(int(persent))
+        time.sleep(0.2)
+        self.mPresenter.addFPSinResult(str(self.averageFPS))
+        self.mPresenter.hidePbar()
+
+    def getFps(self,str):
+        
+        fps = str[len(str)-9]+str[len(str)-8]+str[len(str)-7]+str[len(str)-6]
+        return fps
+
+                
+
 
     def printpipe(self):
-        
-        persent = ""
-        while (persent!="100"):
-            with open("/home/mary/application/Instance-Segmentation/source/test.log", "r") as file:
-                persent = self.parsingString(file.readlines()[-1])
-                print(persent)# передавать значения на Главную вкладку в отдельном потоке через презентер?
-                self.anyObjects.changed_value.emit(int(persent))
-                time.sleep(0.5)
+        count =0
+        sum=0
+        while (self.persent!="100"):
+            with open(self.LOG_FILE, "r") as file:
+                if(os.path.getsize(self.LOG_FILE)!=0):
+                    str = file.readlines()[-1]
+                    self.persent = self.parsingString(str)
+                    if(self.persent!= None and self.persent.isnumeric()):
+                        fps = float(self.getFps(str))
+                        count+=1
+                        sum +=fps
+        self.averageFPS=sum/count
+                
 
 
     def test(self,videoPath):
         
-        self.anyObjects.changed_value.connect(self.mPresenter.changeValuePbar)#функция из presentor
+        #self.anyObjects.changed_value.connect(self.mPresenter.changeValuePbar)#функция из presentor
         threads = []
         threads.append(th.Thread(target=self.cmd))
         threads.append(th.Thread(target=self.printpipe))
+        threads.append(th.Thread(target=self.getSignal))
  
         for i in threads:
             i.start()
-            time.sleep(6)
+            #time.sleep(5)
+        self.mPresenter.showPbar()
         
         #print(result.stderr)
        # print(result.stdout)

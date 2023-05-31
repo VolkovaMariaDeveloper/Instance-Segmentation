@@ -10,12 +10,14 @@ class MainPresenter(IPresenter):
         self.cView = cView
         self.model = model
         self.runningSystemsSet = set()
+        self.nameSystemSegmentation = ""
+        self.shortVideoName = "kiss"
 
     def onUploadVideoButtonClick(self):
-        pathVideo, shortVideoName = self.model.uploadVideo()
+        pathVideo, self.shortVideoName = self.model.uploadVideo()
         self.mView.runVideo(pathVideo, self.mView.leftMediaplayer)
         self.mView.displayText("~/application/source/data/output",self.mView.textBoxVideoPath)
-        self.mView.displayText(shortVideoName, self.mView.textBoxLeftVideoName)
+        self.mView.displayText(self.shortVideoName, self.mView.textBoxLeftVideoName)
 
     def onUploadLabelButtonClick(self):
         shortLabelName = self.model.uploadLabel()
@@ -26,13 +28,40 @@ class MainPresenter(IPresenter):
         string = ', '.join(self.runningSystemsSet)
         return string
 
+#TODO добавить результаты
 
-    #@pyqtSlot(int)
-    def changeValuePbar(self, val):
-        self.mView.pbar.setValue(val)
+    def parseTextResults(self):
+        textResult = "Results: \n\n"
+        fps = self.model.resultDictionary.get(self.nameSystemSegmentation+"_FPS")
+        textResult+= "FPS: " + fps
+        return textResult
+
+
+    def runSegmentedResults(self):
+        videoPath = self.model.resultDictionary.get(self.nameSystemSegmentation+"_videoPath")
+        self.mView.runVideo(videoPath, self.mView.rightMediaplayer)
+        self.mView.displayText(self.shortVideoName, self.mView.textBoxRightVideoName)
+        self.mView.displayText(self.parseTextResults(), self.mView.textBoxForResults)
+
+
+
+    def hidePbar(self):
+        self.mView.pbar.hide()
+        self.runSegmentedResults()
+
+
+    def addFPSinResult(self,value):
+        self.model.resultDictionary[self.nameSystemSegmentation+"_FPS"] = value
+
+    def showPbar(self):
+        self.mView.pbar.show()
+
+
+    def changeValuePbar(self, value):
+        self.mView.pbar.setValue(value)
 
     def onStartButtonClick(self, nameSystemSegmentation):
-
+        self.nameSystemSegmentation = nameSystemSegmentation
         resultDict = self.model.runSegmentation(self, nameSystemSegmentation)
         systemsName = self.checkRunningSystems(nameSystemSegmentation)
         self.mView.displayText(systemsName, self.mView.textBoxForRunningSystems)
