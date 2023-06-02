@@ -13,21 +13,18 @@ class ComparasionPresenter(IPresenter):
         leftSystem = self.cView.leftComboBox.currentText()
         videoPath = self.model.resultDictionary.get(leftSystem+"_videoPath") #создать текстовые константы
         self.cView.runVideo(videoPath,self.cView.leftMediaplayer)
-        self.cView.displayText("6 FPS, 12 объектов", self.cView.textBoxForLeftResults)
-        print(videoPath)
+        self.cView.displayText(self.model.parseTextResults(leftSystem), self.cView.textBoxForLeftResults)
         shortLeftVideoName = self.model.getShortFileName(videoPath)
-        self.cView.displayText("kiss_blend_mask", self.cView.textBoxLeftVideoName)
-        self.cView.runVideo("D:\\University\\Magistracy\\Segmentation\\application\\source\\data\\output\\output_kiss_video.mp4", self.cView.leftMediaplayer)
+        self.cView.displayText(shortLeftVideoName, self.cView.textBoxLeftVideoName)
+        self.cView.runVideo(videoPath, self.cView.leftMediaplayer)
 
-        import time
-        time.sleep(1)
-        self.cView.runVideo("D:\\University\\Magistracy\\Segmentation\\application\\source\\data\\output\\output_kiss_video.mp4", self.cView.rightMediaplayer)
+        
         #для выбранной правой системы
         rightSystem = self.cView.rightComboBox.currentText()
         videoPath = self.model.resultDictionary.get(rightSystem+"_videoPath")
-       # self.cView.runVideo(videoPath, self.cView.rightMediaplayer)
-        self.cView.displayText("4.7 FPS, 13 объектов", self.cView.textBoxForRightResults)
+        self.cView.runVideo(videoPath, self.cView.rightMediaplayer)
+        self.cView.displayText(self.model.parseTextResults(rightSystem), self.cView.textBoxForRightResults)
         shortRightVideoName = self.model.getShortFileName(videoPath)
-        self.cView.displayText("kiss_cond_inst", self.cView.textBoxRightVideoName)
+        self.cView.displayText(shortRightVideoName, self.cView.textBoxRightVideoName)
 
   

@@ -1,6 +1,7 @@
 from source.model.wrapper.Wrapper import Wrapper
 from source.presenter.IPresenter import IPresenter
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
+import time
 
 class MainPresenter(IPresenter):
 
@@ -30,28 +31,24 @@ class MainPresenter(IPresenter):
 
 #TODO добавить результаты
 
-    def parseTextResults(self):
-        textResult = "Results: \n\n"
-        fps = self.model.resultDictionary.get(self.nameSystemSegmentation+"_FPS")
-        textResult+= "FPS: " + fps
-        return textResult
-
 
     def runSegmentedResults(self):
         videoPath = self.model.resultDictionary.get(self.nameSystemSegmentation+"_videoPath")
         self.mView.runVideo(videoPath, self.mView.rightMediaplayer)
         self.mView.displayText(self.shortVideoName, self.mView.textBoxRightVideoName)
-        self.mView.displayText(self.parseTextResults(), self.mView.textBoxForResults)
-
-
+        self.mView.displayText(self.model.parseTextResults(self.nameSystemSegmentation), self.mView.textBoxForResults)
 
     def hidePbar(self):
         self.mView.pbar.hide()
+        self.mView.pbar.setValue(0)
         self.runSegmentedResults()
+        self.mView.segmentationStarted = False
 
 
-    def addFPSinResult(self,value):
+    def addFPSinResult(self,value,frameCount,time):
         self.model.resultDictionary[self.nameSystemSegmentation+"_FPS"] = value
+        self.model.resultDictionary[self.nameSystemSegmentation+"_frameCount"] = frameCount
+        self.model.resultDictionary[self.nameSystemSegmentation+"_time"] = time
 
     def showPbar(self):
         self.mView.pbar.show()

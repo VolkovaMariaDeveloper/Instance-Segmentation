@@ -9,16 +9,18 @@ from PyQt5.QtWidgets import QFileDialog
 from os import path
 import pathlib
 from pathlib import Path
+import math 
 
 class Wrapper(IVideoData,ITextData):
     def __init__(self):
         self.labelPath = ""
         self.videoPath= "~/application/Instance-Segmentation/data/input/short.mp4"
         self.segmentationSystem = ISegmentation()#PolarMask(self.videoPath)
-        self.segmentatedVideoPath = ""
+       # self.segmentatedVideoPath = ""
         self.mainDirectory = ""
         self.nameVideo = "short"
         self.resultDictionary = {}
+
         
     def getShortFileName(self,full_name):
         full_name = path.basename(full_name)
@@ -45,20 +47,35 @@ class Wrapper(IVideoData,ITextData):
     def createOutputPath(self):
         path = "/home/mary/application/Instance-Segmentation/data/output/" + self.segmentationSystem.name +"/"+ self.nameVideo+".mp4"
         return path
+    def mapTime(self,time):
+        minutes = math.trunc(time/60)
+        seconds = round(time - minutes*60)
+        return str(minutes)+" мин. "+ str(seconds)+" сек. "
 
-    def runSegmentation(self,mpresenter, segmentationSystemName):
+
+    def parseTextResults(self, nameSystemSegmentation):
+        textResult = "Данные сегментации видео: \n\n"
+        fps = self.resultDictionary.get(nameSystemSegmentation +"_FPS")
+        frameCount = self.resultDictionary.get(nameSystemSegmentation +"_frameCount")
+        time = self.resultDictionary.get(nameSystemSegmentation +"_time")
+        textResult+= "FPS: " + fps +"\n"
+        textResult+= "Количество кадров: " + frameCount +"\n"
+        textResult+= "Время сегментации: " + self.mapTime(time) +"\n"
+        return textResult
+
+    def runSegmentation(self, mPresenter, segmentationSystemName):
         #TODO обработать вариант с тем, что придет что-то неожиданное!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if segmentationSystemName == "BlendMask":
-            self.segmentationSystem = BlendMask()
+            self.segmentationSystem = BlendMask(self.videoPath, mPresenter)
         elif segmentationSystemName == "CondInst":
-            self.segmentationSystem = CondInst(self.videoPath, mpresenter)
+            self.segmentationSystem = CondInst(self.videoPath, mPresenter)
         elif segmentationSystemName == "YOLACT":
-            self.segmentationSystem = YOLACT()
+            self.segmentationSystem = YOLACT(self.videoPath, mPresenter)
             #quantitativeResults - словарь {FPS: значение, numberOfObjects: значение, IoU: значение}
         self.segmentationSystem.test(self.videoPath) 
         # возможно есть смысл системе сегментации возвращать путь к сохраненному видео
         # запуск сегментации определенной системы, если будут метки, то здесь их принимаем и записываем в словарь
-        #print(segmentationSystemName + "_videoPath")
+
         self.resultDictionary[segmentationSystemName + "_videoPath"] = self.createOutputPath() 
 
         return self.resultDictionary
@@ -69,14 +86,14 @@ class Wrapper(IVideoData,ITextData):
        # return self.segmentatedVideoPath, shortSegmentedVideoName, quantitativeResults
     
     #создается директория segmentedVideo, видео сохраняется по названию исходного видео+имя системы, возвращает ссылку на видео
-    def saveVideo(segmentedVideo):
-        pass
+    #def saveVideo(segmentedVideo):
+    #    pass
 
-    def saveResultsInTextFile():# для каждого видеофайла создает отдельный текстовый файл с результатами систем в формате json[BlendMask:{путь к сегментированному видео +словарь результатов}, PolarMask, YOLACT]
-        pass
-    def searchResultsInTextFile(self):
-        file = open(self.mainDirectory + "result/result.txt")
-        dictionary = file.read()
-        return dictionary  
+   # def saveResultsInTextFile():# для каждого видеофайла создает отдельный текстовый файл с результатами систем в формате json[BlendMask:{путь к сегментированному видео +словарь результатов}, PolarMask, YOLACT]
+   #     pass
+   # def searchResultsInTextFile(self):
+   #     file = open(self.mainDirectory + "result/result.txt")
+   #     dictionary = file.read()
+   #     return dictionary  
 
 
