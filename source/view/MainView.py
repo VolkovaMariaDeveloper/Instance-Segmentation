@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QGridLayout, QPushButton,QRadioButton,QButtonGroup, QLabel, QWidget, QProgressBar
+from PyQt5.QtWidgets import QGridLayout, QPushButton,QRadioButton,QButtonGroup, QLabel, QWidget, QProgressBar, QMessageBox
 from PyQt5.QtMultimedia import QMediaPlayer
 from PyQt5.QtMultimediaWidgets import QVideoWidget
 from PyQt5 import QtGui, QtCore
@@ -17,6 +17,7 @@ class MainView (IView):
     def __init__(self, cView, model):
         self.cView = cView
         self.empty = QWidget()
+        self.segmentationStarted = False
 
         self.pbar = QProgressBar()
         self.pbar.setValue(0)
@@ -134,10 +135,19 @@ class MainView (IView):
         self.nameOfSystemSegmentation = button.text()
 
     def startButtonClicked(self):
-        #self.runIndicator()    
-        self.mPresenter.onStartButtonClick(self.nameOfSystemSegmentation)
+        if(not self.segmentationStarted):   
+            self.mPresenter.onStartButtonClick(self.nameOfSystemSegmentation)
+            self.segmentationStarted = True
+        else:
+            warningMessage = QMessageBox()
+            warningMessage.setWindowTitle("Пердупреждение")
+            warningMessage.setText("Данное действие выполнить невозможно, дождитесь окончания сегментации предыдущей системы")
+            warningMessage.setIcon(QMessageBox.Warning)
+            warningMessage.setStandardButtons(QMessageBox.Close)
+            warningMessage.exec_()
     
     def runDefaultState(self):
+        self.segmentationStarted = False
         self.textBoxForRunningSystems.setText("")
         self.textBoxLeftVideoName.setText("")
         self.textBoxRightVideoName.setText("")
@@ -153,4 +163,5 @@ class MainView (IView):
         self.cView.textBoxForRightResults.setText("")
         self.cView.leftVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
         self.cView.rightVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
+        self.rightVideoWidget.update()
        
