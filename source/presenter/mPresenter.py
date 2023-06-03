@@ -1,7 +1,5 @@
-from source.model.wrapper.Wrapper import Wrapper
-from source.presenter.IPresenter import IPresenter
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
-import time
+from presenter.IPresenter import IPresenter
+from os import path
 
 class MainPresenter(IPresenter):
 
@@ -12,25 +10,26 @@ class MainPresenter(IPresenter):
         self.model = model
         self.runningSystemsSet = set()
         self.nameSystemSegmentation = ""
-        self.shortVideoName = "kiss"
+        self.shortVideoName = ""
+
+    def getShortPathName(self,full_name):
+        listName = full_name.split(path.sep)
+        return path.join("~ ../",listName[-4],listName[-3],listName[-2],listName[-1])
 
     def onUploadVideoButtonClick(self):
         pathVideo, self.shortVideoName = self.model.uploadVideo()
         self.mView.runVideo(pathVideo, self.mView.leftMediaplayer)
-        self.mView.displayText("~/application/source/data/output",self.mView.textBoxVideoPath)
+        self.mView.displayText(self.getShortPathName(pathVideo),self.mView.textBoxVideoPath)
         self.mView.displayText(self.shortVideoName, self.mView.textBoxLeftVideoName)
 
     def onUploadLabelButtonClick(self):
         shortLabelName = self.model.uploadLabel()
-        self.mView.displayText(shortLabelName,self.mView.textBoxLabelName)
+        self.mView.displayText(self.getShortPathName(shortLabelName),self.mView.textBoxLabelName)
 
     def checkRunningSystems(self,systemName):
         self.runningSystemsSet.add(systemName)
         string = ', '.join(self.runningSystemsSet)
         return string
-
-#TODO добавить результаты
-
 
     def runSegmentedResults(self):
         videoPath = self.model.resultDictionary.get(self.nameSystemSegmentation+"_videoPath")
@@ -44,7 +43,6 @@ class MainPresenter(IPresenter):
         self.runSegmentedResults()
         self.mView.segmentationStarted = False
 
-
     def addFPSinResult(self,value,frameCount,time):
         self.model.resultDictionary[self.nameSystemSegmentation+"_FPS"] = value
         self.model.resultDictionary[self.nameSystemSegmentation+"_frameCount"] = frameCount
@@ -52,7 +50,6 @@ class MainPresenter(IPresenter):
 
     def showPbar(self):
         self.mView.pbar.show()
-
 
     def changeValuePbar(self, value):
         self.mView.pbar.setValue(value)
@@ -66,12 +63,3 @@ class MainPresenter(IPresenter):
         if (self.cView.leftComboBox.findText(nameSystemSegmentation)==-1):
             self.cView.leftComboBox.addItem(nameSystemSegmentation)
             self.cView.rightComboBox.addItem(nameSystemSegmentation)
-
-        
-        #segmentatedVideoPath, shortSegmentedVideoName, quantitativeResults = self.model.runSegmentation(nameSystemSegmentation)
-        #self.mView.runVideo(segmentatedVideoPath, self.mView.rightMediaplayer)
-        #self.mView.displayText(shortSegmentedVideoName, self.mView.textBoxRightVideoName)
-       #self.mView.displayText(quantitativeResults, self.mView.textBoxForResults)# возможно придется создать функцию, которая к приемлемому виду приведет результаты
-       # self.mView.displayText(nameSystemSegmentation, self.mView.TextBoxForRunningSystems)
-       # self.cView.addSystemForComparation(nameSystemSegmentation)
-

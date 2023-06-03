@@ -2,54 +2,47 @@ from PyQt5.QtWidgets import QGridLayout, QPushButton,QRadioButton,QButtonGroup, 
 from PyQt5.QtMultimedia import QMediaPlayer
 from PyQt5.QtMultimediaWidgets import QVideoWidget
 from PyQt5 import QtGui, QtCore
-from source.presenter.mPresenter import MainPresenter
-
+from presenter.mPresenter import MainPresenter
 from PyQt5.QtCore import Qt
-from source.view.IView import IView
+from view.IView import IView
+import configparser
 
 class MainView (IView):
-    BUTTON_COLOR =  "white"
-    FRAME_COLOR = "#bababa"
-    PATH_TO_IMAGE_FOLDER ="source/images/folderImg.png"
-    #def __getattr__(self, item):
-   #     return IView.__dict__[item]
 
-    def __init__(self, cView, model):
+    def __init__(self, cView, model, conf):
+        self.conf = conf
+        self.conf.read("configuration/config.ini")
         self.cView = cView
         self.empty = QWidget()
         self.segmentationStarted = False
 
         self.pbar = QProgressBar()
         self.pbar.setValue(0)
-        self.pbar.hide()
-        #self.pbar.setVisible(False)
-        
+        self.pbar.hide()        
 
         self.uploadLabelButton = QPushButton("")
         self.uploadLabelButton.clicked.connect(self.uploadLabelButtonCliked)
-        self.uploadLabelButton.setIcon(QtGui.QIcon(self.PATH_TO_IMAGE_FOLDER))
-        self.uploadLabelButton.setStyleSheet('background:' + self.BUTTON_COLOR)
+        self.uploadLabelButton.setIcon(QtGui.QIcon(self.conf.get("paths", "image")))
+        self.uploadLabelButton.setStyleSheet(self.conf.get("colors", "button"))
         self.uploadLabelButton.setMaximumHeight(22)
 
         self.uploadVideoButton = QPushButton("")
         self.uploadVideoButton.clicked.connect(self.uploadVideoButtonCliked)
-        self.uploadVideoButton.setIcon(QtGui.QIcon(self.PATH_TO_IMAGE_FOLDER))
-        self.uploadVideoButton.setStyleSheet('background:'+ self.BUTTON_COLOR)
+        self.uploadVideoButton.setIcon(QtGui.QIcon(self.conf.get("paths", "image")))
+        self.uploadVideoButton.setStyleSheet(self.conf.get("colors", "button"))
         self.uploadVideoButton.setMaximumHeight(22)
 
         self.startButton = QPushButton("Старт")
         self.startButton.clicked.connect(self.startButtonClicked)
-        self.startButton.setStyleSheet('background:'+ self.BUTTON_COLOR)
+        self.startButton.setStyleSheet(self.conf.get("colors", "button"))
         
         self.textBoxLeftVideoName = QLabel("")
         self.textBoxRightVideoName = QLabel("")
-
-        
        
         self.textBoxLabelName =  QLabel('Разметки нет...')
         self.textBoxLabelName.setAlignment(QtCore.Qt.AlignCenter)
        
-        self.textBoxVideoPath =  QLabel(' Выберите видео...')
+        self.textBoxVideoPath =  QLabel('Выберите видео...')
         self.textBoxVideoPath.setAlignment(QtCore.Qt.AlignCenter)
 
         self.layoutUploadVideo = QGridLayout()
@@ -76,7 +69,6 @@ class MainView (IView):
         self.thirdRadioButton = QRadioButton('YOLACT')
 
         self.layoutRadioButton = QGridLayout()
-       # self.layoutRadioButton.addWidget(self.textBoxSelectionHeader,0,0,1,1, Qt.AlignmentFlag.AlignCenter)
         self.layoutRadioButton.addWidget(self.firstRadioButton,1,0,1,1, Qt.AlignmentFlag.AlignLeft)
         self.layoutRadioButton.addWidget(self.secondRadioButton,2,0,1,1, Qt.AlignmentFlag.AlignLeft)
         self.layoutRadioButton.addWidget(self.thirdRadioButton,3,0,1,1, Qt.AlignmentFlag.AlignLeft)
@@ -94,7 +86,7 @@ class MainView (IView):
         self.leftVideoWidget = QVideoWidget()
         self.leftVideoWidget.setMaximumWidth(750)
         self.leftVideoWidget.setMaximumHeight(320)
-        self.leftVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
+        self.leftVideoWidget.setStyleSheet(self.conf.get("colors", "frame"))
         self.leftMediaplayerWidget = QWidget() 
 
         self.layout = QGridLayout()
@@ -105,7 +97,7 @@ class MainView (IView):
 
         self.rightMediaplayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         self.rightVideoWidget = QVideoWidget()
-        self.rightVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
+        self.rightVideoWidget.setStyleSheet(self.conf.get("colors", "frame"))
         self.rightVideoWidget.setMaximumWidth(750)
         self.rightVideoWidget.setMaximumHeight(320)
         self.rightMediaplayerWidget = QWidget()
@@ -135,13 +127,21 @@ class MainView (IView):
         self.nameOfSystemSegmentation = button.text()
 
     def startButtonClicked(self):
-        if(not self.segmentationStarted):   
+        if(self.textBoxVideoPath.text()=="Выберите видео..."):
+            warningMessage = QMessageBox()
+            warningMessage.setWindowTitle(self.conf.get("message", "warning"))
+            warningMessage.setText(self.conf.get("message", "warning_not_video"))
+            warningMessage.setIcon(QMessageBox.Warning)
+            warningMessage.setStandardButtons(QMessageBox.Close)
+            warningMessage.exec_()
+        elif(not self.segmentationStarted):   
+            self.textBoxForResults.setText("")
             self.mPresenter.onStartButtonClick(self.nameOfSystemSegmentation)
             self.segmentationStarted = True
         else:
             warningMessage = QMessageBox()
-            warningMessage.setWindowTitle("Пердупреждение")
-            warningMessage.setText("Данное действие выполнить невозможно, дождитесь окончания сегментации предыдущей системы")
+            warningMessage.setWindowTitle(self.conf.get("message", "warning"))
+            warningMessage.setText(self.conf.get("message", "warning_restart"))
             warningMessage.setIcon(QMessageBox.Warning)
             warningMessage.setStandardButtons(QMessageBox.Close)
             warningMessage.exec_()
@@ -151,7 +151,7 @@ class MainView (IView):
         self.textBoxForRunningSystems.setText("")
         self.textBoxLeftVideoName.setText("")
         self.textBoxRightVideoName.setText("")
-        self.rightVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
+        self.rightVideoWidget.setStyleSheet(self.conf.get("colors", "frame"))
         self.textBoxForResults.setText("")
         self.textBoxLabelName.setText('Разметки нет...')
         self.mPresenter.runningSystemsSet.clear()
@@ -161,7 +161,7 @@ class MainView (IView):
         self.cView.textBoxRightVideoName.setText("")
         self.cView.textBoxForLeftResults.setText("")
         self.cView.textBoxForRightResults.setText("")
-        self.cView.leftVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
-        self.cView.rightVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
+        self.cView.leftVideoWidget.setStyleSheet(self.conf.get("colors", "frame"))
+        self.cView.rightVideoWidget.setStyleSheet(self.conf.get("colors", "frame"))
         self.rightVideoWidget.update()
        

@@ -2,15 +2,14 @@ from PyQt5.QtWidgets import QGridLayout,QComboBox, QPushButton,QLabel, QWidget, 
 from PyQt5.QtMultimedia import QMediaPlayer
 from PyQt5.QtMultimediaWidgets import QVideoWidget
 from PyQt5 import  QtCore
-from source.presenter.cPresenter import ComparasionPresenter
+from presenter.cPresenter import ComparasionPresenter
 from PyQt5.QtCore import Qt
-from source.view.IView import IView
+from view.IView import IView
 
 class ComparasionView(IView):
-    BUTTON_COLOR =  "white"
-    FRAME_COLOR ="#bababa"
-
-    def __init__(self, model):
+    def __init__(self, model, conf):
+        self.conf = conf
+        self.conf.read("configuration/config.ini")
         self.nonStartedSystemError = QErrorMessage()
         self.leftComboBox = QComboBox()
         self.rightComboBox = QComboBox()
@@ -19,7 +18,7 @@ class ComparasionView(IView):
 
         self.startButton = QPushButton("Старт")
         self.startButton.clicked.connect(self.startButtonClicked)
-        self.startButton.setStyleSheet('background:' + self.BUTTON_COLOR)
+        self.startButton.setStyleSheet(self.conf.get("colors", "button"))
 
         self.textBoxLeftVideoName = QLabel("")
         self.textBoxLeftVideoName.setAlignment(QtCore.Qt.AlignHCenter)
@@ -38,7 +37,7 @@ class ComparasionView(IView):
         self.leftVideoWidget.setMaximumWidth(880)
         self.leftVideoWidget.setMaximumHeight(320)
 
-        self.leftVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
+        self.leftVideoWidget.setStyleSheet(self.conf.get("colors", "frame"))
         self.leftMediaplayerWidget = QWidget() 
 
         self.layout = QGridLayout()
@@ -51,7 +50,7 @@ class ComparasionView(IView):
         self.rightVideoWidget = QVideoWidget()
         self.rightVideoWidget.setMaximumWidth(880)
         self.rightVideoWidget.setMaximumHeight(320)
-        self.rightVideoWidget.setStyleSheet('background:'+ self.FRAME_COLOR)
+        self.rightVideoWidget.setStyleSheet(self.conf.get("colors", "frame"))
         self.rightMediaplayerWidget = QWidget()
 
         self.layout = QGridLayout()
