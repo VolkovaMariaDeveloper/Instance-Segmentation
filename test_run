@@ -1,7 +1,0 @@
-python AdelaiDet/demo/demo.py \
-    --config-file AdelaiDet/configs/BlendMask/DLA_34_syncbn_4x.yaml \
-    --video-input data/input/short.mp4 \
-    --output data/output/BlendMask \
-    --confidence-threshold 0.35 \
-    --opts MODEL.WEIGHTS AdelaiDet/training_dir/DLA_34_syncbn_4x.pth
-

@@ -1,4 +1,4 @@
-from source.model.segmentation.ISegmentation import ISegmentation
+from model.segmentation.ISegmentation import ISegmentation
 import subprocess 
 import threading as th
 import time
@@ -7,8 +7,9 @@ import warnings
 import os
 
 class YOLACT(ISegmentation):
-    LOG_FILE ="/home/mary/application/Instance-Segmentation/source/test.log"
-    def __init__(self,videoPath, mPresenter):
+    def __init__(self,videoPath, mPresenter, conf):
+        self.conf = conf
+        self.conf.read("configuration/config.ini")
         self.name = "YOLACT"
         self.videoPath = videoPath
         self.mPresenter = mPresenter
@@ -17,21 +18,14 @@ class YOLACT(ISegmentation):
         self.time=""
         self.frameCount = ""
         self.shortVideoName = self.mPresenter.shortVideoName
-    def segmentation(videoPath):
-        pass 
+
     def cmd(self):
-        comand = 'python yolact_edge/eval.py \
-        --trained_model=yolact_edge/weights/yolact_edge_vid_847_50000.pth \
-        --score_threshold=0.3 \
-        --top_k=100 \
-        --video='+ self.videoPath +':data/output/YOLACT/'+self.shortVideoName+'.mp4 \
-        --display_bboxes False \
-        --disable_tensorrt '
-        activateEnv = '. $CONDA_PREFIX/etc/profile.d/conda.sh && conda activate yolact-env &&'
-        with open(self.LOG_FILE, "w+") as file:
+        comand = (self.conf.get("comand", "segmentation_Yolact_first") 
+                  + self.videoPath + self.conf.get("comand", "segmentation_Yolact_second")
+                  +self.shortVideoName + self.conf.get("comand", "segmentation_Yolact_third"))
+        activateEnv = self.conf.get("comand", "env_yolact")
+        with open(self.conf.get("paths", "log_file"), "w+") as file:
             subprocess.run(activateEnv + comand, stdout=file,  universal_newlines=True, shell = True)
-
-
         
     def is_number(self,str):
         try:
@@ -66,8 +60,8 @@ class YOLACT(ISegmentation):
         sum=0
         start = time.time()
         while (self.persent!="100.00"):
-            with open(self.LOG_FILE, "r") as file:
-                if(os.path.getsize(self.LOG_FILE)!=0):
+            with open(self.conf.get("paths", "log_file"), "r") as file:
+                if(os.path.getsize(self.conf.get("paths", "log_file"))!=0):
                     str = file.readlines()[-1]
                     str = str.replace(' ', '')
                     if(str.startswith('Processing')):
@@ -80,7 +74,7 @@ class YOLACT(ISegmentation):
         self.time = time.time() - start
                 
 
-    def test(self,videoPath):
+    def segmentation(self):
         threads = []
         threads.append(th.Thread(target=self.cmd))
         threads.append(th.Thread(target=self.getPersentAndAveFPS))
