@@ -26,12 +26,12 @@ class CondInst(ISegmentation):
         self.frameCount = ""
 
     def cmd(self):
-        comand = (self.conf.get("comand", "segmentation_CondInst_first") + " "
+        command = (self.conf.get("command", "segmentation_CondInst_first") + " "
                   + self.videoPath +" "
-                  + self.conf.get("comand", "segmentation_CondInst_second"))
-        activateEnv = self.conf.get("comand", "env_adelai")
+                  + self.conf.get("command", "segmentation_CondInst_second"))
+        activateEnv = self.conf.get("command", "env_adelai")
         with open(self.conf.get("paths", "log_file"), "w+") as file:
-            subprocess.run(activateEnv + comand,stdout=PIPE, stderr=file, universal_newlines=True, shell = True)
+            subprocess.run(activateEnv + command,stdout=PIPE, stderr=file, universal_newlines=True, shell = True)
 
     def parseToGetPercent(self,string):
         str = ""
@@ -47,8 +47,8 @@ class CondInst(ISegmentation):
             if (persent==None):
                 persent = 0
             self.mPresenter.changeValuePbar(int(persent))
-            time.sleep(0.2)
-        self.mPresenter.changeValuePbar(int(persent))       
+        self.mPresenter.changeValuePbar(int(persent))  
+        time.sleep(1)     
         self.mPresenter.addFPSinResult(str(self.averageFPS),self.frameCount,self.time)
         self.mPresenter.hidePbar()
 
