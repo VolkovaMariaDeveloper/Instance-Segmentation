@@ -36,7 +36,8 @@ class MainPresenter(IPresenter):
         videoPath = self.model.resultDictionary.get(self.nameSystemSegmentation+"_videoPath")
         self.mView.runVideo(videoPath, self.mView.rightMediaplayer)
         self.mView.displayText(self.shortVideoName, self.mView.textBoxRightVideoName)
-        self.mView.displayText(self.model.parseTextResults(self.nameSystemSegmentation), self.mView.textBoxForResults)
+        self.mView.displayText(self.model.parseFrameCount(self.nameSystemSegmentation), self.mView.textBoxForFrameCount)
+        self.mView.displayText(self.model.parseTime(self.nameSystemSegmentation), self.mView.textBoxForTime)
 
     def hidePbar(self):
         time.sleep(1.2)   
@@ -44,6 +45,7 @@ class MainPresenter(IPresenter):
         self.mView.pbar.setValue(0)
         self.runSegmentedResults()
         self.mView.segmentationStarted = False
+        self.cView.segmentationStarted = False
 
     def addFPSinResult(self,value,frameCount,time):
         self.model.resultDictionary[self.nameSystemSegmentation+"_FPS"] = value
@@ -59,6 +61,7 @@ class MainPresenter(IPresenter):
     def onStartButtonClick(self, nameSystemSegmentation):
         self.nameSystemSegmentation = nameSystemSegmentation
         resultDict = self.model.runSegmentation(self, nameSystemSegmentation)
+       
         systemsName = self.checkRunningSystems(nameSystemSegmentation)
         self.mView.displayText(systemsName, self.mView.textBoxForRunningSystems)
 

@@ -8,58 +8,68 @@ from view.ComparasionView import ComparasionView
 import configparser
 
 class App(QMainWindow):
+    TITLE_WINDOW = "Обучающее приложение сегментации объектов дорожного видео"
+    LEFT = 120
+    TOP = 100
+    WIDTH = 1730
+    HEIGHT = 850
+    BACKGROUND_COLOR  = "#D6D6D6"
+
+
     def __init__(self):
         super().__init__()
-        conf = configparser.RawConfigParser()
-        conf.read("configuration/config.ini")
-        
-        self.title = 'Обучающее приложение сегментации объектов дорожного видео'
+        self.title = self.TITLE_WINDOW
         self.setWindowTitle(self.title)
-        self.setGeometry(conf.getint("settingsMainWindow", "left"), 
-                         conf.getint("settingsMainWindow", "top"), 
-                         conf.getint("settingsMainWindow", "width"), 
-                         conf.getint("settingsMainWindow", "height"))
-        self.setStyleSheet(conf.get("colors", "background"))
+        self.setGeometry(self.LEFT, 
+                         self.TOP, 
+                         self.WIDTH, 
+                         self.HEIGHT)
+        self.setStyleSheet("background:"+self.BACKGROUND_COLOR)
         self.table_widget = MyTableWidget(self)
         self.setCentralWidget(self.table_widget)
         self.show()
 
 class MyTableWidget(QWidget):
-    
+   
+    MAIN_TAB = "Главная"
+    COMPARASION_TAB = "Сравнение результатов"
+    FONT = "font-size: 15pt; font-family: Arial; "#background:#D6D6D6;"
+
     def __init__(self, parent):
         super(QWidget, self).__init__(parent)
         conf = configparser.RawConfigParser()
-        conf.read("configuration/config.ini")
-        self.setStyleSheet(conf.get("settingsMainWindow", "settings"))
+        self.setStyleSheet(self.FONT)
         self.layout = QVBoxLayout(self)
         self.tabs = QTabWidget()
 
         self.mainTab = QWidget()
         self.comparasionTab = QWidget()
 
-        self.tabs.addTab(self.mainTab,"Главная")
-        self.tabs.addTab(self.comparasionTab,"Сравнение результатов")
+        self.tabs.addTab(self.mainTab, self.MAIN_TAB)
+        self.tabs.addTab(self.comparasionTab, self.COMPARASION_TAB)
         self.tabs.setMinimumSize(1500,850)
         self.tabs.setDocumentMode(False)
 
         model = Wrapper(conf) 
-        self.cView = ComparasionView(model,conf)
+        self.cView = ComparasionView(model)
         self.mView = MainView(self.cView, model,conf)
 
         self.mainTab.layout = QGridLayout(self)
+        
         self.mainTab.setLayout(self.mainTab.layout)
 
         self.mainTab.layout.addWidget(self.mView.textBoxSelectionHeader,0,3,0,3)
 
-        self.mainTab.layout.addWidget(self.mView.widgetUploadVideo,1,0,1,3,Qt.AlignmentFlag.AlignTop)
-        self.mainTab.layout.addWidget(self.mView.widgetLabel,2,0,1,3,Qt.AlignmentFlag.AlignTop)
+        self.mainTab.layout.addWidget(self.mView.widgetUploadVideo,1,0,1,3,Qt.AlignmentFlag.AlignBottom)
+        #self.mainTab.layout.addWidget(self.mView.widgetLabel,2,0,1,3,Qt.AlignmentFlag.AlignTop)
         self.mainTab.layout.addWidget(self.mView.widgetRadioButton,1,3,2,3,Qt.AlignmentFlag.AlignTop)
+        self.mainTab.layout.addWidget(self.mView.textBoxForFrameCount,3,0,1,3,Qt.AlignmentFlag.AlignTop)
+        self.mainTab.layout.addWidget(self.mView.textBoxForTime,3,3,1,3,Qt.AlignmentFlag.AlignTop)
+        self.mainTab.layout.addWidget(self.mView.leftMediaplayerWidget,4,0,6,3)
+        self.mainTab.layout.addWidget(self.mView.rightMediaplayerWidget,4,3,6,3)
 
-        self.mainTab.layout.addWidget(self.mView.leftMediaplayerWidget,3,0,6,3)
-        self.mainTab.layout.addWidget(self.mView.rightMediaplayerWidget,3,3,6,3)
-
-        self.mainTab.layout.addWidget(self.mView.textBoxForResults,9,1,1,4,Qt.AlignmentFlag.AlignTop)
         self.mainTab.layout.addWidget(self.mView.textBoxForRunningSystems,11,0,1,6, Qt.AlignmentFlag.AlignBottom)
+        self.mainTab.layout.setHorizontalSpacing(90)
 
         self.comparasionTab.layout = QGridLayout(self)
         self.comparasionTab.setLayout(self.comparasionTab.layout)

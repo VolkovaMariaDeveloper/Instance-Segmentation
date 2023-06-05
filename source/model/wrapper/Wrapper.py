@@ -10,6 +10,7 @@ from pathlib import Path
 import math 
 
 class Wrapper(IVideoData):
+    TITLE = "Загрузка видео"
     def __init__(self,conf):
         self.conf = conf
         self.conf.read("configuration/config.ini")
@@ -26,32 +27,34 @@ class Wrapper(IVideoData):
   
     def uploadVideo(self):
         self.resultDictionary.clear()
-        self.videoPath, _ = QFileDialog.getOpenFileName(None, "Upload Video", self.conf.get("paths", "data"))
+        self.videoPath, _ = QFileDialog.getOpenFileName(None, self.TITLE, self.conf.get("paths", "data"))
         shortName = self.getShortFileName(self.videoPath)
         self.nameVideo = shortName
         return self.videoPath, shortName
 
-    def uploadLabel(self):
-        self.labelPath, _ = QFileDialog.getOpenFileName(None, "Upload Video Label",self.conf.get("paths", "data"))
-        return self.labelPath
+    #def uploadLabel(self):
+       # self.labelPath, _ = QFileDialog.getOpenFileName(None, "Upload Video Label",self.conf.get("paths", "data"))
+       # return self.labelPath
 
     def createOutputPath(self):
         path = self.conf.get("paths", "fill_out") + self.segmentationSystem.name +"/"+ self.nameVideo+".mp4"
         return path
     
-    def mapTime(self,time):
-        minutes = math.trunc(time/60)
-        seconds = round(time - minutes*60)
-        return str(minutes)+" мин. "+ str(seconds)+" сек. "
+    #def mapTime(self,time):
+       # minutes = math.trunc(time/60)
+       # seconds = round(time - minutes*60)
+        #return str(minutes)+" мин. "+ str(seconds)+" сек. "
 
-    def parseTextResults(self, nameSystemSegmentation):
-        textResult = "Данные сегментации видео: \n\n"
-        fps = self.resultDictionary.get(nameSystemSegmentation +"_FPS")
+    def parseFrameCount(self, nameSystemSegmentation):
         frameCount = self.resultDictionary.get(nameSystemSegmentation +"_frameCount")
+        textResult = "Количество кадров: " + frameCount +"\n"
+        return textResult
+    
+    def parseTime(self, nameSystemSegmentation):
+        fps = self.resultDictionary.get(nameSystemSegmentation +"_FPS")
         time = self.resultDictionary.get(nameSystemSegmentation +"_time")
-        textResult+= "FPS: " + fps +"\n"
-        textResult+= "Количество кадров: " + frameCount +"\n"
-        textResult+= "Время сегментации: " + self.mapTime(time) +"\n"
+        textResult= "FPS: " + fps +"\n"
+        textResult+= "Время сегментации: " + str(round(time)) +" c\n"
         return textResult
 
     def runSegmentation(self, mPresenter, segmentationSystemName):

@@ -20,11 +20,10 @@ class YOLACT(ISegmentation):
         self.shortVideoName = self.mPresenter.shortVideoName
 
     def cmd(self):
+        activateEnv = self.conf.get("command", "env_yolact")
         command = (self.conf.get("command", "segmentation_Yolact_first") 
                   + self.videoPath + self.conf.get("command", "segmentation_Yolact_second")
                   +self.shortVideoName + self.conf.get("command", "segmentation_Yolact_third"))
-        print(command)
-        activateEnv = self.conf.get("command", "env_yolact")
         with open(self.conf.get("paths", "log_file"), "w+") as file:
             subprocess.run(activateEnv + command, stdout=file,  universal_newlines=True, shell = True)
         

@@ -12,7 +12,7 @@ class ComparasionPresenter(IPresenter):
         leftSystem = self.cView.leftComboBox.currentText()
         videoPath = self.model.resultDictionary.get(leftSystem+"_videoPath") 
         self.cView.runVideo(videoPath,self.cView.leftMediaplayer)
-        self.cView.displayText(self.model.parseTextResults(leftSystem), self.cView.textBoxForLeftResults)
+        self.cView.displayText(self.model.parseFrameCount(leftSystem) + self.model.parseTime(leftSystem), self.cView.textBoxForLeftResults)
         shortLeftVideoName = self.model.getShortFileName(videoPath)
         self.cView.displayText(shortLeftVideoName, self.cView.textBoxLeftVideoName)
         self.cView.runVideo(videoPath, self.cView.leftMediaplayer)
@@ -22,7 +22,7 @@ class ComparasionPresenter(IPresenter):
         rightSystem = self.cView.rightComboBox.currentText()
         videoPath = self.model.resultDictionary.get(rightSystem+"_videoPath")
         self.cView.runVideo(videoPath, self.cView.rightMediaplayer)
-        self.cView.displayText(self.model.parseTextResults(rightSystem), self.cView.textBoxForRightResults)
+        self.cView.displayText(self.model.parseFrameCount(leftSystem) + self.model.parseTime(leftSystem), self.cView.textBoxForRightResults)
         shortRightVideoName = self.model.getShortFileName(videoPath)
         self.cView.displayText(shortRightVideoName, self.cView.textBoxRightVideoName)
 
