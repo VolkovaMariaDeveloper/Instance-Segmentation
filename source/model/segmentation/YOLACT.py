@@ -20,12 +20,13 @@ class YOLACT(ISegmentation):
         self.shortVideoName = self.mPresenter.shortVideoName
 
     def cmd(self):
-        comand = (self.conf.get("comand", "segmentation_Yolact_first") 
-                  + self.videoPath + self.conf.get("comand", "segmentation_Yolact_second")
-                  +self.shortVideoName + self.conf.get("comand", "segmentation_Yolact_third"))
-        activateEnv = self.conf.get("comand", "env_yolact")
+        command = (self.conf.get("command", "segmentation_Yolact_first") 
+                  + self.videoPath + self.conf.get("command", "segmentation_Yolact_second")
+                  +self.shortVideoName + self.conf.get("command", "segmentation_Yolact_third"))
+        print(command)
+        activateEnv = self.conf.get("command", "env_yolact")
         with open(self.conf.get("paths", "log_file"), "w+") as file:
-            subprocess.run(activateEnv + comand, stdout=file,  universal_newlines=True, shell = True)
+            subprocess.run(activateEnv + command, stdout=file,  universal_newlines=True, shell = True)
         
     def is_number(self,str):
         try:
@@ -38,8 +39,9 @@ class YOLACT(ISegmentation):
         while (self.persent!="100.00"):
             persent = self.persent
             self.mPresenter.changeValuePbar(float(persent))
-            time.sleep(0.2)
-        self.mPresenter.changeValuePbar(float(persent))       
+            #time.sleep(0.2)
+        self.mPresenter.changeValuePbar(float(persent))  
+        time.sleep(0.2)     
         self.mPresenter.addFPSinResult(str(self.averageFPS),self.frameCount,self.time)
         self.mPresenter.hidePbar()
 
