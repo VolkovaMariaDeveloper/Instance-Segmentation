@@ -5,9 +5,20 @@ from PyQt5 import QtGui, QtCore
 from presenter.mPresenter import MainPresenter
 from PyQt5.QtCore import Qt
 from view.IView import IView
-import configparser
+
 
 class MainView (IView):
+    BUTTON_COLOR = "white"
+    FRAME_COLOR = "#bababa"
+    START = "Старт"
+    WARNING_RESTART = "Данное действие выполнить невозможно, дождитесь окончания сегментации предыдущей системы"
+    WARNING_NOT_VIDEO = "Перед запуском сегментации загрузите видео"
+    WARNING = "Пердупреждение"
+    CHANGE_VIDEO = "Выберите видео..."
+    CHANGE_SYSTEM = "Выберите систему сегментации"
+    BLEND_MASK = "BlendMask"
+    COND_INST = "CondInst"
+    YOLACT = "YOLACT"
 
     def __init__(self, cView, model, conf):
         self.conf = conf
@@ -20,29 +31,29 @@ class MainView (IView):
         self.pbar.setValue(0)
         self.pbar.hide()        
 
-        self.uploadLabelButton = QPushButton("")
-        self.uploadLabelButton.clicked.connect(self.uploadLabelButtonCliked)
-        self.uploadLabelButton.setIcon(QtGui.QIcon(self.conf.get("paths", "image")))
-        self.uploadLabelButton.setStyleSheet(self.conf.get("colors", "button"))
-        self.uploadLabelButton.setMaximumHeight(22)
+      #  self.uploadLabelButton = QPushButton("")
+      #  self.uploadLabelButton.clicked.connect(self.uploadLabelButtonCliked)
+      #  self.uploadLabelButton.setIcon(QtGui.QIcon(self.conf.get("paths", "image")))
+       # self.uploadLabelButton.setStyleSheet(self.conf.get("colors", "button"))
+       # self.uploadLabelButton.setMaximumHeight(22)
 
         self.uploadVideoButton = QPushButton("")
         self.uploadVideoButton.clicked.connect(self.uploadVideoButtonCliked)
         self.uploadVideoButton.setIcon(QtGui.QIcon(self.conf.get("paths", "image")))
-        self.uploadVideoButton.setStyleSheet(self.conf.get("colors", "button"))
+        self.uploadVideoButton.setStyleSheet("background:"+self.BUTTON_COLOR)
         self.uploadVideoButton.setMaximumHeight(22)
 
-        self.startButton = QPushButton("Старт")
+        self.startButton = QPushButton(self.START)
         self.startButton.clicked.connect(self.startButtonClicked)
-        self.startButton.setStyleSheet(self.conf.get("colors", "button"))
+        self.startButton.setStyleSheet("background:"+self.BUTTON_COLOR)
         
         self.textBoxLeftVideoName = QLabel("")
         self.textBoxRightVideoName = QLabel("")
        
-        self.textBoxLabelName =  QLabel('Разметки нет...')
-        self.textBoxLabelName.setAlignment(QtCore.Qt.AlignCenter)
+       # self.textBoxLabelName =  QLabel('Разметки нет...')
+       # self.textBoxLabelName.setAlignment(QtCore.Qt.AlignCenter)
        
-        self.textBoxVideoPath =  QLabel('Выберите видео...')
+        self.textBoxVideoPath =  QLabel(self.CHANGE_VIDEO)
         self.textBoxVideoPath.setAlignment(QtCore.Qt.AlignCenter)
 
         self.layoutUploadVideo = QGridLayout()
@@ -52,21 +63,23 @@ class MainView (IView):
         self.widgetUploadVideo.setLayout(self.layoutUploadVideo)
 
         self.layoutLabel = QGridLayout()
-        self.layoutLabel.addWidget(self.textBoxLabelName,0,0,1,4, Qt.AlignmentFlag.AlignTop)
-        self.layoutLabel.addWidget(self.uploadLabelButton,0,4,1,1, Qt.AlignmentFlag.AlignTop)
+        #self.layoutLabel.addWidget(self.textBoxLabelName,0,0,1,4, Qt.AlignmentFlag.AlignTop)
+        #self.layoutLabel.addWidget(self.uploadLabelButton,0,4,1,1, Qt.AlignmentFlag.AlignTop)
         self.widgetLabel = QWidget()
         self.widgetLabel.setLayout(self.layoutLabel)
 
-        self.textBoxForResults = QLabel("")
-        self.textBoxForResults.setAlignment(QtCore.Qt.AlignHCenter)
+        self.textBoxForFrameCount = QLabel("")
+        self.textBoxForFrameCount.setAlignment(QtCore.Qt.AlignHCenter)
+        self.textBoxForTime = QLabel("")
+        self.textBoxForTime.setAlignment(QtCore.Qt.AlignHCenter)
 
-        self.textBoxSelectionHeader = QLabel("Выберите систему сегментации")
+        self.textBoxSelectionHeader = QLabel(self.CHANGE_SYSTEM)
         self.textBoxSelectionHeader.setAlignment(QtCore.Qt.AlignHCenter)
         
-        self.firstRadioButton = QRadioButton('BlendMask')
+        self.firstRadioButton = QRadioButton(self.BLEND_MASK)
         self.firstRadioButton.setChecked(True)
-        self.secondRadioButton = QRadioButton('CondInst')
-        self.thirdRadioButton = QRadioButton('YOLACT')
+        self.secondRadioButton = QRadioButton(self.COND_INST)
+        self.thirdRadioButton = QRadioButton(self.YOLACT)
 
         self.layoutRadioButton = QGridLayout()
         self.layoutRadioButton.addWidget(self.firstRadioButton,1,0,1,1, Qt.AlignmentFlag.AlignLeft)
@@ -84,10 +97,12 @@ class MainView (IView):
 
         self.leftMediaplayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         self.leftVideoWidget = QVideoWidget()
-        self.leftVideoWidget.setMaximumWidth(750)
-        self.leftVideoWidget.setMaximumHeight(320)
-        self.leftVideoWidget.setStyleSheet(self.conf.get("colors", "frame"))
+        #self.leftVideoWidget.setMaximumWidth(750)
+       # self.leftVideoWidget.setMaximumHeight(320)
+        self.leftVideoWidget.setStyleSheet("background:"+self.FRAME_COLOR)
         self.leftMediaplayerWidget = QWidget() 
+        self.leftMediaplayerWidget.setFixedWidth(800)
+        self.leftMediaplayerWidget.setFixedHeight(400)
 
         self.layout = QGridLayout()
         self.layout.addWidget(self.leftVideoWidget,0,0,6,6)
@@ -97,10 +112,12 @@ class MainView (IView):
 
         self.rightMediaplayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         self.rightVideoWidget = QVideoWidget()
-        self.rightVideoWidget.setStyleSheet(self.conf.get("colors", "frame"))
-        self.rightVideoWidget.setMaximumWidth(750)
-        self.rightVideoWidget.setMaximumHeight(320)
+        self.rightVideoWidget.setStyleSheet("background:"+self.FRAME_COLOR)
+       # self.rightVideoWidget.setMaximumWidth(750)
+        #self.rightVideoWidget.setMaximumHeight(320)
         self.rightMediaplayerWidget = QWidget()
+        self.rightMediaplayerWidget.setFixedWidth(800)
+        self.rightMediaplayerWidget.setFixedHeight(400)
 
         self.layout = QGridLayout()
         self.layout.addWidget(self.rightVideoWidget,0,0,6,6)
@@ -112,48 +129,48 @@ class MainView (IView):
         self.textBoxForRunningSystems = QLabel("")
         self.textBoxForRunningSystems.setAlignment(QtCore.Qt.AlignHCenter)
 
-        self.nameOfSystemSegmentation = 'BlendMask'
+        self.nameOfSystemSegmentation = self.BLEND_MASK
         self.mPresenter =  MainPresenter(self,self.cView, model)
 
     def uploadVideoButtonCliked(self):
         self.runDefaultState()
         self.mPresenter.onUploadVideoButtonClick()
         
-    def uploadLabelButtonCliked(self):
-        self.mPresenter.onUploadLabelButtonClick()
+   # def uploadLabelButtonCliked(self):
+   #     self.mPresenter.onUploadLabelButtonClick()
             
     def _on_radio_button_clicked(self, button):
         button.setChecked(True)
         self.nameOfSystemSegmentation = button.text()
 
     def startButtonClicked(self):
-        if(self.textBoxVideoPath.text()=="Выберите видео..."):
+        if(self.textBoxVideoPath.text()== self.CHANGE_VIDEO):
             warningMessage = QMessageBox()
-            warningMessage.setWindowTitle(self.conf.get("message", "warning"))
-            warningMessage.setText(self.conf.get("message", "warning_not_video"))
+            warningMessage.setWindowTitle(self.WARNING)
+            warningMessage.setText(self. WARNING_NOT_VIDEO)
             warningMessage.setIcon(QMessageBox.Warning)
             warningMessage.setStandardButtons(QMessageBox.Close)
             warningMessage.exec_()
         elif(not self.segmentationStarted):   
-            self.textBoxForResults.setText("")
             self.mPresenter.onStartButtonClick(self.nameOfSystemSegmentation)
             self.segmentationStarted = True
+            self.cView.segmentationStarted = True
         else:
             warningMessage = QMessageBox()
-            warningMessage.setWindowTitle(self.conf.get("message", "warning"))
-            warningMessage.setText(self.conf.get("message", "warning_restart"))
+            warningMessage.setWindowTitle(self.WARNING)
+            warningMessage.setText(self.WARNING_RESTART)
             warningMessage.setIcon(QMessageBox.Warning)
             warningMessage.setStandardButtons(QMessageBox.Close)
             warningMessage.exec_()
     
     def runDefaultState(self):
         self.segmentationStarted = False
+        self.cView.segmentationStarted = False
         self.textBoxForRunningSystems.setText("")
         self.textBoxLeftVideoName.setText("")
         self.textBoxRightVideoName.setText("")
-        self.rightVideoWidget.setStyleSheet(self.conf.get("colors", "frame"))
-        self.textBoxForResults.setText("")
-        self.textBoxLabelName.setText('Разметки нет...')
+        self.textBoxForFrameCount.setText("")
+        self.textBoxForTime.setText("")
         self.mPresenter.runningSystemsSet.clear()
         self.cView.leftComboBox.clear()
         self.cView.rightComboBox.clear()
@@ -161,7 +178,5 @@ class MainView (IView):
         self.cView.textBoxRightVideoName.setText("")
         self.cView.textBoxForLeftResults.setText("")
         self.cView.textBoxForRightResults.setText("")
-        self.cView.leftVideoWidget.setStyleSheet(self.conf.get("colors", "frame"))
-        self.cView.rightVideoWidget.setStyleSheet(self.conf.get("colors", "frame"))
         self.rightVideoWidget.update()
        

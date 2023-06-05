@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QGridLayout,QComboBox, QPushButton,QLabel, QWidget, QErrorMessage
+from PyQt5.QtWidgets import QGridLayout,QComboBox, QPushButton,QLabel, QWidget, QErrorMessage, QMessageBox
 from PyQt5.QtMultimedia import QMediaPlayer
 from PyQt5.QtMultimediaWidgets import QVideoWidget
 from PyQt5 import  QtCore
@@ -7,18 +7,23 @@ from PyQt5.QtCore import Qt
 from view.IView import IView
 
 class ComparasionView(IView):
-    def __init__(self, model, conf):
-        self.conf = conf
-        self.conf.read("configuration/config.ini")
+    BUTTON_COLOR = "white"
+    FRAME_COLOR = "#bababa"
+    START = "Старт"
+    WARNING_START = "Данное действие выполнить невозможно, дождитесь окончания сегментации системы на главной вкладке"
+    WARNING = "Пердупреждение"
+
+    def __init__(self, model):
+        self.segmentationStarted = False
         self.nonStartedSystemError = QErrorMessage()
         self.leftComboBox = QComboBox()
         self.rightComboBox = QComboBox()
         self.leftComboBox.activated[str].connect(self.onSelectedLeftComboBox)
         self.leftComboBox.activated[str].connect(self.onSelectedRightComboBox)
 
-        self.startButton = QPushButton("Старт")
+        self.startButton = QPushButton(self.START)
         self.startButton.clicked.connect(self.startButtonClicked)
-        self.startButton.setStyleSheet(self.conf.get("colors", "button"))
+        self.startButton.setStyleSheet("background:"+self.BUTTON_COLOR)
 
         self.textBoxLeftVideoName = QLabel("")
         self.textBoxLeftVideoName.setAlignment(QtCore.Qt.AlignHCenter)
@@ -37,7 +42,7 @@ class ComparasionView(IView):
         self.leftVideoWidget.setMaximumWidth(880)
         self.leftVideoWidget.setMaximumHeight(320)
 
-        self.leftVideoWidget.setStyleSheet(self.conf.get("colors", "frame"))
+        self.leftVideoWidget.setStyleSheet("background:"+self.FRAME_COLOR)
         self.leftMediaplayerWidget = QWidget() 
 
         self.layout = QGridLayout()
@@ -50,7 +55,7 @@ class ComparasionView(IView):
         self.rightVideoWidget = QVideoWidget()
         self.rightVideoWidget.setMaximumWidth(880)
         self.rightVideoWidget.setMaximumHeight(320)
-        self.rightVideoWidget.setStyleSheet(self.conf.get("colors", "frame"))
+        self.rightVideoWidget.setStyleSheet("background:"+self.FRAME_COLOR)
         self.rightMediaplayerWidget = QWidget()
 
         self.layout = QGridLayout()
@@ -76,4 +81,13 @@ class ComparasionView(IView):
         self.rightSystemName = self.rightComboBox.currentText()
 
     def startButtonClicked(self):
-        self.cPresenter.onStartButtonClick()
+        if(not self.segmentationStarted):   
+            self.cPresenter.onStartButtonClick()
+        else:
+            warningMessage = QMessageBox()
+            warningMessage.setWindowTitle(self.WARNING)
+            warningMessage.setText(self.WARNING_START)
+            warningMessage.setIcon(QMessageBox.Warning)
+            warningMessage.setStandardButtons(QMessageBox.Close)
+            warningMessage.exec_()
+        
