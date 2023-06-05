@@ -19,8 +19,10 @@ class BlendMask(ISegmentation):
 
     def cmd(self):
         
-        comand = self.conf.get("comand", "segmentation_BlendMask_first") +" "+ self.videoPath +" "+ self.conf.get("comand", "segmentation_BlendMask_second")
-        activateEnv = self.conf.get("comand", "env_adelai")
+        comand = (self.conf.get("command", "segmentation_BlendMask_first") + " "
+                  + self.videoPath +" "
+                  + self.conf.get("command", "segmentation_BlendMask_second"))
+        activateEnv = self.conf.get("command", "env_adelai")
         with open(self.conf.get("paths", "log_file"), "w+") as file:
             subprocess.run(activateEnv + comand,stdout=PIPE, stderr=file, universal_newlines=True, shell = True)
 

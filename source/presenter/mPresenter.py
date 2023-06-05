@@ -1,5 +1,6 @@
 from presenter.IPresenter import IPresenter
 from os import path
+import time
 
 class MainPresenter(IPresenter):
 
@@ -38,6 +39,7 @@ class MainPresenter(IPresenter):
         self.mView.displayText(self.model.parseTextResults(self.nameSystemSegmentation), self.mView.textBoxForResults)
 
     def hidePbar(self):
+        time.sleep(1.2)   
         self.mView.pbar.hide()
         self.mView.pbar.setValue(0)
         self.runSegmentedResults()

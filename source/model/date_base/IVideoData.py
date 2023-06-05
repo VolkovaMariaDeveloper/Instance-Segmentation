@@ -5,5 +5,3 @@ class IVideoData(ABC):
         pass
     def uploadLabel():
         pass
-    def saveVideo():
-        pass

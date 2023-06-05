@@ -15,10 +15,10 @@ class App(QMainWindow):
         
         self.title = 'Обучающее приложение сегментации объектов дорожного видео'
         self.setWindowTitle(self.title)
-        self.setGeometry(conf.getint("dimensions", "left"), 
-                         conf.getint("dimensions", "top"), 
-                         conf.getint("dimensions", "width"), 
-                         conf.getint("dimensions", "heigth"))
+        self.setGeometry(conf.getint("settingsMainWindow", "left"), 
+                         conf.getint("settingsMainWindow", "top"), 
+                         conf.getint("settingsMainWindow", "width"), 
+                         conf.getint("settingsMainWindow", "height"))
         self.setStyleSheet(conf.get("colors", "background"))
         self.table_widget = MyTableWidget(self)
         self.setCentralWidget(self.table_widget)
