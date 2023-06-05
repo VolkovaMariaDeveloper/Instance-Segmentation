@@ -8,11 +8,6 @@ import os
 
 
 class CondInst(ISegmentation):
-    #TODO в конфигурационный файл все константы
-    #CONFIG_FILE = "configs/CondInst/MS_R_50_BiFPN_3x_sem.yaml"
-    #OUTPUT_PATH = "~/video/output/CondInst"
-   # MODEL_WEIGHTS = "training_dir/CondInst_MS_R_50_BiFPN_3x_sem.pth"
-   # CONFIDENCE_THRESHOLD = 0.35
     
     def __init__(self,videoPath, mPresenter, conf):
         self.conf = conf
@@ -26,10 +21,10 @@ class CondInst(ISegmentation):
         self.frameCount = ""
 
     def cmd(self):
+        activateEnv = self.conf.get("command", "env_adelai")
         command = (self.conf.get("command", "segmentation_CondInst_first") + " "
                   + self.videoPath +" "
                   + self.conf.get("command", "segmentation_CondInst_second"))
-        activateEnv = self.conf.get("command", "env_adelai")
         with open(self.conf.get("paths", "log_file"), "w+") as file:
             subprocess.run(activateEnv + command,stdout=PIPE, stderr=file, universal_newlines=True, shell = True)
 
@@ -44,19 +39,17 @@ class CondInst(ISegmentation):
     def passValues(self):
         while (self.persent!="100"):
             persent = self.persent
-            if (persent==None):
-                persent = 0
-            self.mPresenter.changeValuePbar(int(persent))
+            if (persent!=None):
+                self.mPresenter.changeValuePbar(int(persent))
         self.mPresenter.changeValuePbar(int(persent))  
-        time.sleep(1)     
+        time.sleep(1)   
         self.mPresenter.addFPSinResult(str(self.averageFPS),self.frameCount,self.time)
         self.mPresenter.hidePbar()
 
     def getCoutnFrames(self):
         with open(self.conf.get("paths", "log_file"), "r") as file:
             str = file.readlines()[-1]
-            self.time = str[len(str)-22]+str[len(str)-21]+str[len(str)-20]+str[len(str)-19]
-            n = 26
+            n = 27
             char = str[len(str)-n]
             while(char.isnumeric()):
                 self.frameCount = char + self.frameCount
@@ -77,14 +70,20 @@ class CondInst(ISegmentation):
                 if(os.path.getsize(self.conf.get("paths", "log_file"))!=0):
                     str = file.readlines()[-1]
                     self.persent = self.parseToGetPercent(str)
-                    if(self.persent!= None and self.persent.isnumeric()):
-                        fps = float(self.parseToGetFPS(str))
+                    fps = self.parseToGetFPS(str)
+                    if(self.is_number(fps)):                       
                         count+=1
-                        sum +=fps
-        self.averageFPS=sum/count
+                        sum +=float(fps)
+        self.averageFPS=round(sum/count,2)
         self.getCoutnFrames()
         self.time = time.time() - start
-                
+
+    def is_number(self,str):
+        try:
+            float(str)
+            return True
+        except ValueError:
+            return False                  
 
     def segmentation(self):
         
