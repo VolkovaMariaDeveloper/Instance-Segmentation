@@ -1,7 +1,15 @@
-from abc import ABC
+from abc import ABC, abstractmethod
 
 class ISegmentation(ABC):
-    def segmentation(self):
+
+    def segmentation():
         pass
-    def test(self):
-        return "ISegmentation"
+    def runDemo():
+        pass
+
+    def is_number(self,str):
+        try:
+            float(str)
+            return True
+        except ValueError:
+            return False     

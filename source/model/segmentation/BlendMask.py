@@ -17,7 +17,7 @@ class BlendMask(ISegmentation):
         self.time=""
         self.frameCount = ""
 
-    def cmd(self):
+    def runDemo(self):
         activateEnv = self.conf.get("command", "env_adelai")
         comand = (self.conf.get("command", "segmentation_BlendMask_first") + " "
                   + self.videoPath +" "
@@ -41,7 +41,7 @@ class BlendMask(ISegmentation):
             self.mPresenter.changeValuePbar(int(persent))
             time.sleep(0.2)
         self.mPresenter.changeValuePbar(int(persent))       
-        self.mPresenter.addFPSinResult(str(self.averageFPS),self.frameCount,self.time)
+        self.mPresenter.addResult(str(self.averageFPS),self.frameCount,self.time)
         self.mPresenter.hidePbar()
 
     def getCoutnFrames(self):
@@ -79,7 +79,7 @@ class BlendMask(ISegmentation):
     def segmentation(self):
         
         threads = []
-        threads.append(th.Thread(target=self.cmd))
+        threads.append(th.Thread(target=self.runDemo))
         threads.append(th.Thread(target=self.getPersentAndAveFPS))
         threads.append(th.Thread(target=self.passValues))
  

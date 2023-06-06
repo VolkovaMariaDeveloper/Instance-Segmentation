@@ -20,7 +20,7 @@ class CondInst(ISegmentation):
         self.time=""
         self.frameCount = ""
 
-    def cmd(self):
+    def runDemo(self):
         activateEnv = self.conf.get("command", "env_adelai")
         command = (self.conf.get("command", "segmentation_CondInst_first") + " "
                   + self.videoPath +" "
@@ -43,7 +43,7 @@ class CondInst(ISegmentation):
                 self.mPresenter.changeValuePbar(int(persent))
         self.mPresenter.changeValuePbar(int(persent))  
         time.sleep(1)   
-        self.mPresenter.addFPSinResult(str(self.averageFPS),self.frameCount,self.time)
+        self.mPresenter.addResult(str(self.averageFPS),self.frameCount,self.time)
         self.mPresenter.hidePbar()
 
     def getCoutnFrames(self):
@@ -71,24 +71,19 @@ class CondInst(ISegmentation):
                     str = file.readlines()[-1]
                     self.persent = self.parseToGetPercent(str)
                     fps = self.parseToGetFPS(str)
-                    if(self.is_number(fps)):                       
+                    if(self.isNumber(fps)):                       
                         count+=1
                         sum +=float(fps)
         self.averageFPS=round(sum/count,2)
         self.getCoutnFrames()
         self.time = time.time() - start
 
-    def is_number(self,str):
-        try:
-            float(str)
-            return True
-        except ValueError:
-            return False                  
+                 
 
     def segmentation(self):
         
         threads = []
-        threads.append(th.Thread(target=self.cmd))
+        threads.append(th.Thread(target=self.runDemo))
         threads.append(th.Thread(target=self.getPersentAndAveFPS))
         threads.append(th.Thread(target=self.passValues))
  

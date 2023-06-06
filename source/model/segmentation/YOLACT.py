@@ -19,29 +19,21 @@ class YOLACT(ISegmentation):
         self.frameCount = ""
         self.shortVideoName = self.mPresenter.shortVideoName
 
-    def cmd(self):
+    def runDemo(self):
         activateEnv = self.conf.get("command", "env_yolact")
         command = (self.conf.get("command", "segmentation_Yolact_first") 
                   + self.videoPath + self.conf.get("command", "segmentation_Yolact_second")
                   +self.shortVideoName + self.conf.get("command", "segmentation_Yolact_third"))
         with open(self.conf.get("paths", "log_file"), "w+") as file:
-            subprocess.run(activateEnv + command, stdout=file,  universal_newlines=True, shell = True)
-        
-    def is_number(self,str):
-        try:
-            float(str)
-            return True
-        except ValueError:
-            return False       
+            subprocess.run(activateEnv + command, stdout=file,  universal_newlines=True, shell = True)      
 
     def passValues(self):
         while (self.persent!="100.00"):
             persent = self.persent
             self.mPresenter.changeValuePbar(float(persent))
-            #time.sleep(0.2)
         self.mPresenter.changeValuePbar(float(persent))  
         time.sleep(0.2)     
-        self.mPresenter.addFPSinResult(str(self.averageFPS),self.frameCount,self.time)
+        self.mPresenter.addResult(str(self.averageFPS),self.frameCount,self.time)
         self.mPresenter.hidePbar()
 
 
@@ -77,7 +69,7 @@ class YOLACT(ISegmentation):
 
     def segmentation(self):
         threads = []
-        threads.append(th.Thread(target=self.cmd))
+        threads.append(th.Thread(target=self.runDemo))
         threads.append(th.Thread(target=self.getPersentAndAveFPS))
         threads.append(th.Thread(target=self.passValues))
  
