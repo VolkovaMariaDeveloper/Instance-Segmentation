@@ -1,7 +1,6 @@
-from abc import ABC
+from abc import ABC,  abstractmethod
 
 class IVideoData(ABC):
+    @abstractmethod
     def uploadVideo():
-        pass
-    def uploadLabel():
         pass

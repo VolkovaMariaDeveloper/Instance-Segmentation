@@ -15,7 +15,6 @@ class ComparasionView(IView):
 
     def __init__(self, model):
         self.segmentationStarted = False
-        self.nonStartedSystemError = QErrorMessage()
         self.leftComboBox = QComboBox()
         self.rightComboBox = QComboBox()
         self.leftComboBox.activated[str].connect(self.onSelectedLeftComboBox)
@@ -25,18 +24,6 @@ class ComparasionView(IView):
         self.startButton.clicked.connect(self.startButtonClicked)
         self.startButton.setStyleSheet("background:"+self.BUTTON_COLOR)
 
-        self.textBoxLeftVideoName = QLabel("")
-        self.textBoxLeftVideoName.setAlignment(QtCore.Qt.AlignHCenter)
-
-        self.textBoxRightVideoName = QLabel("")
-        self.textBoxRightVideoName.setAlignment(QtCore.Qt.AlignHCenter)
-
-        self.textBoxForLeftResults = QLabel("")
-        self.textBoxForLeftResults.setAlignment(QtCore.Qt.AlignHCenter)
-
-        self.textBoxForRightResults = QLabel("")
-        self.textBoxForRightResults.setAlignment(QtCore.Qt.AlignHCenter)
-
         self.leftMediaplayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         self.leftVideoWidget = QVideoWidget()        
         self.leftVideoWidget.setMaximumWidth(880)
@@ -45,10 +32,13 @@ class ComparasionView(IView):
         self.leftVideoWidget.setStyleSheet("background:"+self.FRAME_COLOR)
         self.leftMediaplayerWidget = QWidget() 
 
-        self.layout = QGridLayout()
-        self.layout.addWidget(self.leftVideoWidget,0,0,6,6)
-        self.layout.addWidget(self.textBoxLeftVideoName,6,0,1,6,Qt.AlignmentFlag.AlignCenter)
-        self.leftMediaplayerWidget.setLayout(self.layout)
+        self.textBoxLeftVideoName = QLabel("")
+        self.textBoxLeftVideoName.setAlignment(QtCore.Qt.AlignHCenter)
+
+        layout = QGridLayout()
+        layout.addWidget(self.leftVideoWidget,0,0,6,6)
+        layout.addWidget(self.textBoxLeftVideoName,6,0,1,6,Qt.AlignmentFlag.AlignCenter)
+        self.leftMediaplayerWidget.setLayout(layout)
         self.leftMediaplayer.setVideoOutput(self.leftVideoWidget)
 
         self.rightMediaplayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
@@ -58,21 +48,31 @@ class ComparasionView(IView):
         self.rightVideoWidget.setStyleSheet("background:"+self.FRAME_COLOR)
         self.rightMediaplayerWidget = QWidget()
 
-        self.layout = QGridLayout()
-        self.layout.addWidget(self.rightVideoWidget,0,0,6,6)
-        self.layout.addWidget(self.textBoxRightVideoName,6,0,1,6,Qt.AlignmentFlag.AlignCenter)
-        self.rightMediaplayerWidget.setLayout(self.layout)
+        self.textBoxRightVideoName = QLabel("")
+        self.textBoxRightVideoName.setAlignment(QtCore.Qt.AlignHCenter)
+
+        layout = QGridLayout()
+        layout.addWidget(self.rightVideoWidget,0,0,6,6)
+        layout.addWidget(self.textBoxRightVideoName,6,0,1,6,Qt.AlignmentFlag.AlignCenter)
+        self.rightMediaplayerWidget.setLayout(layout)
         self.rightMediaplayer.setVideoOutput(self.rightVideoWidget)
+
+        self.textBoxForLeftResults = QLabel("")
+        self.textBoxForLeftResults.setAlignment(QtCore.Qt.AlignHCenter)
+
+        self.textBoxForRightResults = QLabel("")
+        self.textBoxForRightResults.setAlignment(QtCore.Qt.AlignHCenter)
 
         self.cPresenter =  ComparasionPresenter(self,model)
 
     def runDefaultState(self):
         self.leftComboBox.clear()
         self.rightComboBox.clear()
-
-    def addSystemForComparation(self, nameSystem):
-        self.leftComboBox.addItem(nameSystem)
-        self.rightComboBox.addItem(nameSystem)
+        self.textBoxLeftVideoName.setText("")
+        self.textBoxRightVideoName.setText("")
+        self.textBoxForLeftResults.setText("")
+        self.textBoxForRightResults.setText("")
+        self.segmentationStarted = False
     
     def onSelectedLeftComboBox(self):
         self.leftSystemName = self.leftComboBox.currentText()

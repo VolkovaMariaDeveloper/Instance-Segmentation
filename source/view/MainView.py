@@ -24,18 +24,11 @@ class MainView (IView):
         self.conf = conf
         self.conf.read("configuration/config.ini")
         self.cView = cView
-        self.empty = QWidget()
         self.segmentationStarted = False
 
         self.pbar = QProgressBar()
         self.pbar.setValue(0)
         self.pbar.hide()        
-
-      #  self.uploadLabelButton = QPushButton("")
-      #  self.uploadLabelButton.clicked.connect(self.uploadLabelButtonCliked)
-      #  self.uploadLabelButton.setIcon(QtGui.QIcon(self.conf.get("paths", "image")))
-       # self.uploadLabelButton.setStyleSheet(self.conf.get("colors", "button"))
-       # self.uploadLabelButton.setMaximumHeight(22)
 
         self.uploadVideoButton = QPushButton("")
         self.uploadVideoButton.clicked.connect(self.uploadVideoButtonCliked)
@@ -43,35 +36,18 @@ class MainView (IView):
         self.uploadVideoButton.setStyleSheet("background:"+self.BUTTON_COLOR)
         self.uploadVideoButton.setMaximumHeight(22)
 
-        self.startButton = QPushButton(self.START)
-        self.startButton.clicked.connect(self.startButtonClicked)
-        self.startButton.setStyleSheet("background:"+self.BUTTON_COLOR)
-        
-        self.textBoxLeftVideoName = QLabel("")
-        self.textBoxRightVideoName = QLabel("")
-       
-       # self.textBoxLabelName =  QLabel('Разметки нет...')
-       # self.textBoxLabelName.setAlignment(QtCore.Qt.AlignCenter)
-       
         self.textBoxVideoPath =  QLabel(self.CHANGE_VIDEO)
         self.textBoxVideoPath.setAlignment(QtCore.Qt.AlignCenter)
 
-        self.layoutUploadVideo = QGridLayout()
-        self.layoutUploadVideo.addWidget(self.textBoxVideoPath,0,0,1,4)
-        self.layoutUploadVideo.addWidget(self.uploadVideoButton,0,4,1,1)
+        layout = QGridLayout()
+        layout.addWidget(self.textBoxVideoPath,0,0,1,4)
+        layout.addWidget(self.uploadVideoButton,0,4,1,1)
         self.widgetUploadVideo = QWidget()
-        self.widgetUploadVideo.setLayout(self.layoutUploadVideo)
+        self.widgetUploadVideo.setLayout(layout)
 
-        self.layoutLabel = QGridLayout()
-        #self.layoutLabel.addWidget(self.textBoxLabelName,0,0,1,4, Qt.AlignmentFlag.AlignTop)
-        #self.layoutLabel.addWidget(self.uploadLabelButton,0,4,1,1, Qt.AlignmentFlag.AlignTop)
-        self.widgetLabel = QWidget()
-        self.widgetLabel.setLayout(self.layoutLabel)
-
-        self.textBoxForFrameCount = QLabel("")
-        self.textBoxForFrameCount.setAlignment(QtCore.Qt.AlignHCenter)
-        self.textBoxForTime = QLabel("")
-        self.textBoxForTime.setAlignment(QtCore.Qt.AlignHCenter)
+        self.startButton = QPushButton(self.START)
+        self.startButton.clicked.connect(self.startButtonClicked)
+        self.startButton.setStyleSheet("background:"+self.BUTTON_COLOR)
 
         self.textBoxSelectionHeader = QLabel(self.CHANGE_SYSTEM)
         self.textBoxSelectionHeader.setAlignment(QtCore.Qt.AlignHCenter)
@@ -81,13 +57,13 @@ class MainView (IView):
         self.secondRadioButton = QRadioButton(self.COND_INST)
         self.thirdRadioButton = QRadioButton(self.YOLACT)
 
-        self.layoutRadioButton = QGridLayout()
-        self.layoutRadioButton.addWidget(self.firstRadioButton,1,0,1,1, Qt.AlignmentFlag.AlignLeft)
-        self.layoutRadioButton.addWidget(self.secondRadioButton,2,0,1,1, Qt.AlignmentFlag.AlignLeft)
-        self.layoutRadioButton.addWidget(self.thirdRadioButton,3,0,1,1, Qt.AlignmentFlag.AlignLeft)
-        self.layoutRadioButton.addWidget(self.startButton,4,0,1,1, Qt.AlignmentFlag.AlignCenter)
+        layout = QGridLayout()
+        layout.addWidget(self.firstRadioButton,1,0,1,1, Qt.AlignmentFlag.AlignLeft)
+        layout.addWidget(self.secondRadioButton,2,0,1,1, Qt.AlignmentFlag.AlignLeft)
+        layout.addWidget(self.thirdRadioButton,3,0,1,1, Qt.AlignmentFlag.AlignLeft)
+        layout.addWidget(self.startButton,4,0,1,1, Qt.AlignmentFlag.AlignCenter)
         self.widgetRadioButton = QWidget()
-        self.widgetRadioButton.setLayout(self.layoutRadioButton)
+        self.widgetRadioButton.setLayout(layout)
 
         self.buttonGroup = QButtonGroup()
         self.buttonGroup.addButton(self.firstRadioButton)
@@ -97,35 +73,38 @@ class MainView (IView):
 
         self.leftMediaplayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         self.leftVideoWidget = QVideoWidget()
-        #self.leftVideoWidget.setMaximumWidth(750)
-       # self.leftVideoWidget.setMaximumHeight(320)
         self.leftVideoWidget.setStyleSheet("background:"+self.FRAME_COLOR)
         self.leftMediaplayerWidget = QWidget() 
         self.leftMediaplayerWidget.setFixedWidth(800)
         self.leftMediaplayerWidget.setFixedHeight(400)
+        self.textBoxLeftVideoName = QLabel("")
 
-        self.layout = QGridLayout()
-        self.layout.addWidget(self.leftVideoWidget,0,0,6,6)
-        self.layout.addWidget(self.textBoxLeftVideoName,6,0,1,6,Qt.AlignmentFlag.AlignCenter)
-        self.leftMediaplayerWidget.setLayout(self.layout)
+        layout = QGridLayout()
+        layout.addWidget(self.leftVideoWidget,0,0,6,6)
+        layout.addWidget(self.textBoxLeftVideoName,6,0,1,6,Qt.AlignmentFlag.AlignCenter)
+        self.leftMediaplayerWidget.setLayout(layout)
         self.leftMediaplayer.setVideoOutput(self.leftVideoWidget)
 
         self.rightMediaplayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
         self.rightVideoWidget = QVideoWidget()
         self.rightVideoWidget.setStyleSheet("background:"+self.FRAME_COLOR)
-       # self.rightVideoWidget.setMaximumWidth(750)
-        #self.rightVideoWidget.setMaximumHeight(320)
         self.rightMediaplayerWidget = QWidget()
         self.rightMediaplayerWidget.setFixedWidth(800)
         self.rightMediaplayerWidget.setFixedHeight(400)
+        self.textBoxRightVideoName = QLabel("")
 
-        self.layout = QGridLayout()
-        self.layout.addWidget(self.rightVideoWidget,0,0,6,6)
-        self.layout.addWidget(self.textBoxRightVideoName,6,0,1,6,Qt.AlignmentFlag.AlignCenter)
-        self.layout.addWidget(self.pbar,0,0,6,6)
-        self.rightMediaplayerWidget.setLayout(self.layout)
+        layout = QGridLayout()
+        layout.addWidget(self.rightVideoWidget,0,0,6,6)
+        layout.addWidget(self.textBoxRightVideoName,6,0,1,6,Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(self.pbar,0,0,6,6)
+        self.rightMediaplayerWidget.setLayout(layout)
         self.rightMediaplayer.setVideoOutput(self.rightVideoWidget)
-       
+
+        self.textBoxForFrameCount = QLabel("")
+        self.textBoxForFrameCount.setAlignment(QtCore.Qt.AlignHCenter)
+        self.textBoxForTime = QLabel("")
+        self.textBoxForTime.setAlignment(QtCore.Qt.AlignHCenter)
+        
         self.textBoxForRunningSystems = QLabel("")
         self.textBoxForRunningSystems.setAlignment(QtCore.Qt.AlignHCenter)
 
@@ -135,9 +114,6 @@ class MainView (IView):
     def uploadVideoButtonCliked(self):
         self.runDefaultState()
         self.mPresenter.onUploadVideoButtonClick()
-        
-   # def uploadLabelButtonCliked(self):
-   #     self.mPresenter.onUploadLabelButtonClick()
             
     def _on_radio_button_clicked(self, button):
         button.setChecked(True)
@@ -165,18 +141,12 @@ class MainView (IView):
     
     def runDefaultState(self):
         self.segmentationStarted = False
-        self.cView.segmentationStarted = False
         self.textBoxForRunningSystems.setText("")
         self.textBoxLeftVideoName.setText("")
         self.textBoxRightVideoName.setText("")
         self.textBoxForFrameCount.setText("")
         self.textBoxForTime.setText("")
         self.mPresenter.runningSystemsSet.clear()
-        self.cView.leftComboBox.clear()
-        self.cView.rightComboBox.clear()
-        self.cView.textBoxLeftVideoName.setText("")
-        self.cView.textBoxRightVideoName.setText("")
-        self.cView.textBoxForLeftResults.setText("")
-        self.cView.textBoxForRightResults.setText("")
+        self.cView.runDefaultState()
         self.rightVideoWidget.update()
        
