@@ -15,7 +15,6 @@ class App(QMainWindow):
     HEIGHT = 850
     BACKGROUND_COLOR  = "#D6D6D6"
 
-
     def __init__(self):
         super().__init__()
         self.title = self.TITLE_WINDOW
@@ -33,7 +32,7 @@ class MyTableWidget(QWidget):
    
     MAIN_TAB = "Главная"
     COMPARASION_TAB = "Сравнение результатов"
-    FONT = "font-size: 15pt; font-family: Arial; "#background:#D6D6D6;"
+    FONT = "font-size: 15pt; font-family: Arial;"
 
     def __init__(self, parent):
         super(QWidget, self).__init__(parent)
@@ -61,7 +60,6 @@ class MyTableWidget(QWidget):
         self.mainTab.layout.addWidget(self.mView.textBoxSelectionHeader,0,3,0,3)
 
         self.mainTab.layout.addWidget(self.mView.widgetUploadVideo,1,0,1,3,Qt.AlignmentFlag.AlignBottom)
-        #self.mainTab.layout.addWidget(self.mView.widgetLabel,2,0,1,3,Qt.AlignmentFlag.AlignTop)
         self.mainTab.layout.addWidget(self.mView.widgetRadioButton,1,3,2,3,Qt.AlignmentFlag.AlignTop)
         self.mainTab.layout.addWidget(self.mView.textBoxForFrameCount,3,0,1,3,Qt.AlignmentFlag.AlignTop)
         self.mainTab.layout.addWidget(self.mView.textBoxForTime,3,3,1,3,Qt.AlignmentFlag.AlignTop)

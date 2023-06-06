@@ -10,7 +10,7 @@ class MainPresenter(IPresenter):
         self.cView = cView
         self.model = model
         self.runningSystemsSet = set()
-        self.nameSystemSegmentation = ""
+        self.systemName = ""
         self.shortVideoName = ""
 
     def getShortPathName(self,full_name):
@@ -23,21 +23,17 @@ class MainPresenter(IPresenter):
         self.mView.displayText(self.getShortPathName(pathVideo),self.mView.textBoxVideoPath)
         self.mView.displayText(self.shortVideoName, self.mView.textBoxLeftVideoName)
 
-    def onUploadLabelButtonClick(self):
-        shortLabelName = self.model.uploadLabel()
-        self.mView.displayText(self.getShortPathName(shortLabelName),self.mView.textBoxLabelName)
-
     def checkRunningSystems(self,systemName):
         self.runningSystemsSet.add(systemName)
         string = ', '.join(self.runningSystemsSet)
         return string
 
     def runSegmentedResults(self):
-        videoPath = self.model.resultDictionary.get(self.nameSystemSegmentation+"_videoPath")
+        videoPath = self.model.resultDictionary.get(self.systemName+"_videoPath")
         self.mView.runVideo(videoPath, self.mView.rightMediaplayer)
         self.mView.displayText(self.shortVideoName, self.mView.textBoxRightVideoName)
-        self.mView.displayText(self.model.parseFrameCount(self.nameSystemSegmentation), self.mView.textBoxForFrameCount)
-        self.mView.displayText(self.model.parseTime(self.nameSystemSegmentation), self.mView.textBoxForTime)
+        self.mView.displayText(self.model.parseFrameCount(self.systemName), self.mView.textBoxForFrameCount)
+        self.mView.displayText(self.model.parseTime(self.systemName), self.mView.textBoxForTime)
 
     def hidePbar(self):
         time.sleep(1.2)   
@@ -47,10 +43,10 @@ class MainPresenter(IPresenter):
         self.mView.segmentationStarted = False
         self.cView.segmentationStarted = False
 
-    def addFPSinResult(self,value,frameCount,time):
-        self.model.resultDictionary[self.nameSystemSegmentation+"_FPS"] = value
-        self.model.resultDictionary[self.nameSystemSegmentation+"_frameCount"] = frameCount
-        self.model.resultDictionary[self.nameSystemSegmentation+"_time"] = time
+    def addResult(self,value,frameCount,time):
+        self.model.resultDictionary[self.systemName+"_FPS"] = value
+        self.model.resultDictionary[self.systemName+"_frameCount"] = frameCount
+        self.model.resultDictionary[self.systemName+"_time"] = time
 
     def showPbar(self):
         self.mView.pbar.show()
@@ -58,13 +54,13 @@ class MainPresenter(IPresenter):
     def changeValuePbar(self, value):
         self.mView.pbar.setValue(value)
 
-    def onStartButtonClick(self, nameSystemSegmentation):
-        self.nameSystemSegmentation = nameSystemSegmentation
-        resultDict = self.model.runSegmentation(self, nameSystemSegmentation)
+    def onStartButtonClick(self, systemName):
+        self.systemName = systemName
+        resultDict = self.model.runSegmentation(self, systemName)
        
-        systemsName = self.checkRunningSystems(nameSystemSegmentation)
+        systemsName = self.checkRunningSystems(systemName)
         self.mView.displayText(systemsName, self.mView.textBoxForRunningSystems)
 
-        if (self.cView.leftComboBox.findText(nameSystemSegmentation)==-1):
-            self.cView.leftComboBox.addItem(nameSystemSegmentation)
-            self.cView.rightComboBox.addItem(nameSystemSegmentation)
+        if (self.cView.leftComboBox.findText(systemName)==-1):
+            self.cView.leftComboBox.addItem(systemName)
+            self.cView.rightComboBox.addItem(systemName)

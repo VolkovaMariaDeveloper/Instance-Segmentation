@@ -14,15 +14,14 @@ class Wrapper(IVideoData):
     def __init__(self,conf):
         self.conf = conf
         self.conf.read("configuration/config.ini")
-        self.labelPath = ""
         self.videoPath= ""
         self.segmentationSystem = ISegmentation()
         self.nameVideo = ""
         self.resultDictionary = {}
         
-    def getShortFileName(self,full_name):
-        full_name = path.basename(full_name)
-        name = path.splitext(full_name)[0]
+    def getShortFileName(self,fullName):
+        fullName = path.basename(fullName)
+        name = path.splitext(fullName)[0]
         return name
   
     def uploadVideo(self):
@@ -32,18 +31,9 @@ class Wrapper(IVideoData):
         self.nameVideo = shortName
         return self.videoPath, shortName
 
-    #def uploadLabel(self):
-       # self.labelPath, _ = QFileDialog.getOpenFileName(None, "Upload Video Label",self.conf.get("paths", "data"))
-       # return self.labelPath
-
     def createOutputPath(self):
         path = self.conf.get("paths", "fill_out") + self.segmentationSystem.name +"/"+ self.nameVideo+".mp4"
         return path
-    
-    #def mapTime(self,time):
-       # minutes = math.trunc(time/60)
-       # seconds = round(time - minutes*60)
-        #return str(minutes)+" мин. "+ str(seconds)+" сек. "
 
     def parseFrameCount(self, nameSystemSegmentation):
         frameCount = self.resultDictionary.get(nameSystemSegmentation +"_frameCount")
