@@ -127,7 +127,9 @@ class MainView (IView):
             warningMessage.setIcon(QMessageBox.Warning)
             warningMessage.setStandardButtons(QMessageBox.Close)
             warningMessage.exec_()
-        elif(not self.segmentationStarted):   
+        elif(not self.segmentationStarted):  
+            self.textBoxForFrameCount.setText("")
+            self.textBoxForTime.setText("")
             self.mPresenter.onStartButtonClick(self.nameOfSystemSegmentation)
             self.segmentationStarted = True
             self.cView.segmentationStarted = True

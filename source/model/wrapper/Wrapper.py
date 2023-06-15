@@ -35,14 +35,14 @@ class Wrapper(IVideoData):
         path = self.conf.get("paths", "fill_out") + self.segmentationSystem.name +"/"+ self.nameVideo+".mp4"
         return path
 
-    def parseFrameCount(self, nameSystemSegmentation):
-        frameCount = self.resultDictionary.get(nameSystemSegmentation +"_frameCount")
+    def parseFrameCount(self, segmentationSystemName):
+        frameCount = self.resultDictionary.get(segmentationSystemName +"_frameCount")
         textResult = "Количество кадров: " + frameCount +"\n"
         return textResult
     
-    def parseTime(self, nameSystemSegmentation):
-        fps = self.resultDictionary.get(nameSystemSegmentation +"_FPS")
-        time = self.resultDictionary.get(nameSystemSegmentation +"_time")
+    def parseTime(self, segmentationSystemName):
+        fps = self.resultDictionary.get(segmentationSystemName +"_FPS")
+        time = self.resultDictionary.get(segmentationSystemName +"_time")
         textResult= "FPS: " + fps +"\n"
         textResult+= "Время сегментации: " + str(round(time)) +" c\n"
         return textResult

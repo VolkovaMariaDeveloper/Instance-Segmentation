@@ -39,13 +39,13 @@ class YOLACT(ISegmentation):
 
     def parseString(self,str,signalChar, index):
         n = index
-        fps = ""
+        value = ""
         char = str[len(str)-n]
         while (char != signalChar):
-            fps = char + fps
+            value = char + value
             n+=1
             char = str[len(str)-n]
-        return n, fps
+        return n, value
 
 
     def getPersentAndAveFPS(self):
