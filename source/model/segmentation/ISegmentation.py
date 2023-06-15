@@ -7,7 +7,7 @@ class ISegmentation(ABC):
     def runDemo():
         pass
 
-    def is_number(self,str):
+    def isNumber(self,str):
         try:
             float(str)
             return True

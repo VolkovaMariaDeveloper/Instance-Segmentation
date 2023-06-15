@@ -22,7 +22,7 @@ class ComparasionPresenter(IPresenter):
         rightSystem = self.cView.rightComboBox.currentText()
         videoPath = self.model.resultDictionary.get(rightSystem+"_videoPath")
         self.cView.runVideo(videoPath, self.cView.rightMediaplayer)
-        self.cView.displayText(self.model.parseFrameCount(leftSystem) + self.model.parseTime(leftSystem), self.cView.textBoxForRightResults)
+        self.cView.displayText(self.model.parseFrameCount(leftSystem) + self.model.parseTime(rightSystem), self.cView.textBoxForRightResults)
         shortRightVideoName = self.model.getShortFileName(videoPath)
         self.cView.displayText(shortRightVideoName, self.cView.textBoxRightVideoName)
 
